@@ -1,73 +1,55 @@
-import { useEffect } from "react";
-import { MANUSCRIPT, SLOTS_MAP } from "@/lib/manuscript";
-import ImageSlot from "@/components/ImageSlot";
+import { BOOK_CHAPTERS } from '@/lib/bookContent';
+import ImageSlot from '@/components/ImageSlot';
 
-const LS_SCROLL = "jackieroo_scroll";
-
-export default function BookView({ illustrationsMap, onUpload, onAssign, selectedUnassigned, hasUnassigned }) {
-  // Save scroll on scroll, restore on mount
-  useEffect(() => {
-    const savedY = parseInt(localStorage.getItem(LS_SCROLL) || "0", 10);
-    if (savedY > 0) window.scrollTo({ top: savedY });
-
-    const handleScroll = () => localStorage.setItem(LS_SCROLL, String(window.scrollY));
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+export default function BookView({ illustrationMap, onUpload, onAssignFromTray, onRemove, selectedUnassigned, setSelectedUnassigned }) {
   return (
-    <div className="py-8 space-y-0">
-      {MANUSCRIPT.chapters.map((chapter) => (
-        <div key={chapter.id} id={chapter.id} className="mb-12">
+    <div className="space-y-0">
+      {BOOK_CHAPTERS.map((chapter) => (
+        <section key={chapter.id} data-chapter={chapter.chapterKey} className="mb-12">
           {/* Chapter header */}
-          <div className="text-center py-8 mb-6">
-            <div className="inline-block bg-amber-900 text-amber-100 text-xs font-bold px-3 py-1 rounded-full mb-3 tracking-widest uppercase">
-              {chapter.title}
-            </div>
-            <h2 className="text-2xl font-bold text-amber-900 font-serif">{chapter.subtitle}</h2>
-            <div className="w-16 h-0.5 bg-amber-400 mx-auto mt-3" />
+          <div className="text-center py-8 mb-6 border-b border-amber-200">
+            <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">{chapter.title}</p>
+            <h2 className="text-2xl font-bold text-amber-900">{chapter.subtitle}</h2>
           </div>
 
           {/* Blocks */}
-          <div className="space-y-6">
-            {chapter.blocks.map((block, idx) => {
-              if (block.type === "text") {
+          <div className="space-y-8">
+            {chapter.blocks.map((block, i) => {
+              if (block.type === 'text') {
                 return (
-                  <div key={idx} className="bg-white rounded-xl px-6 py-5 shadow-sm border border-amber-100">
-                    <p className="text-amber-950 leading-relaxed font-serif text-base">{block.content}</p>
+                  <p key={i} className="text-amber-950 leading-relaxed text-[17px] font-serif px-2">
+                    {block.content}
+                  </p>
+                );
+              }
+              if (block.type === 'pageturn') {
+                return (
+                  <div key={i} className="flex items-center gap-4 my-6">
+                    <div className="flex-1 border-t border-dashed border-amber-300" />
+                    <span className="text-xs text-amber-400 italic">— page turn —</span>
+                    <div className="flex-1 border-t border-dashed border-amber-300" />
                   </div>
                 );
               }
-
-              if (block.type === "pageturn") {
-                return (
-                  <div key={idx} className="flex items-center gap-3 py-2">
-                    <div className="flex-1 h-px bg-amber-200" />
-                    <span className="text-amber-400 text-xs font-medium px-2">— page turn —</span>
-                    <div className="flex-1 h-px bg-amber-200" />
-                  </div>
-                );
-              }
-
-              if (block.type === "slot") {
-                const slotMeta = SLOTS_MAP[block.slot_id];
-                const record = illustrationsMap[block.slot_id];
+              if (block.type === 'slot') {
                 return (
                   <ImageSlot
                     key={block.slot_id}
-                    slot={slotMeta || { slot_id: block.slot_id, label: block.label, order_index: block.order_index }}
-                    imageUrl={record?.image_url}
+                    slot={block}
+                    illustration={illustrationMap[block.slot_id]}
                     onUpload={onUpload}
-                    onAssign={onAssign}
+                    onAssignFromTray={onAssignFromTray}
+                    onRemove={onRemove}
                     selectedUnassigned={selectedUnassigned}
+                    setSelectedUnassigned={setSelectedUnassigned}
+                    layout="book"
                   />
                 );
               }
-
               return null;
             })}
           </div>
-        </div>
+        </section>
       ))}
     </div>
   );

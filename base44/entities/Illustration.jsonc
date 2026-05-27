@@ -29,8 +29,6 @@
     }
   },
   "required": [
-    "slot_id",
-    "chapter",
-    "order_index"
+    "slot_id"
   ]
 }

@@ -1,195 +1,168 @@
-import { useState } from "react";
-import { jsPDF } from "jspdf";
-import JSZip from "jszip";
-import { MANUSCRIPT, SLOTS } from "@/lib/manuscript";
-import { FileDown, Package, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState } from 'react';
+import { jsPDF } from 'jspdf';
+import { FileText, Archive, AlertTriangle, CheckCircle } from 'lucide-react';
+import { SLOT_CONFIG, CHAPTER_META } from '@/lib/slotConfig';
+import { BOOK_CHAPTERS } from '@/lib/bookContent';
 
 const TRIM_SIZES = {
-  "8x8": { w: 8, h: 8, label: '8" × 8"' },
-  "8.5x8.5": { w: 8.5, h: 8.5, label: '8.5" × 8.5"' },
-  "9x9": { w: 9, h: 9, label: '9" × 9"' },
+  '8x8':     { w: 8,   h: 8 },
+  '8.5x8.5': { w: 8.5, h: 8.5 },
+  '9x9':     { w: 9,   h: 9 },
 };
 const BLEED = 0.125;
 
-export default function ExportView({ illustrationsMap }) {
-  const [trimSize, setTrimSize] = useState("8.5x8.5");
-  const [pdfStatus, setPdfStatus] = useState(null); // null | 'loading' | 'done'
-  const [zipStatus, setZipStatus] = useState(null);
+async function loadImageAsDataUrl(url) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+  });
+}
 
-  const placedSlots = SLOTS.filter(s => illustrationsMap[s.slot_id]?.image_url);
-  const allChapters = MANUSCRIPT.chapters;
+export default function ExportView({ illustrationMap }) {
+  const [trimSize, setTrimSize] = useState('8.5x8.5');
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const [zipLoading, setZipLoading] = useState(false);
 
-  const handlePDF = async () => {
-    setPdfStatus("loading");
+  const placedSlots = SLOT_CONFIG.filter(s => illustrationMap[s.slot_id]?.image_url);
+  const totalPlaced = placedSlots.length;
+
+  const handlePdfExport = async () => {
+    setPdfLoading(true);
     const { w, h } = TRIM_SIZES[trimSize];
-    const totalW = w + BLEED * 2;
-    const totalH = h + BLEED * 2;
-    const doc = new jsPDF({ unit: "in", format: [totalW, totalH], orientation: "portrait" });
+    const pageW = w + BLEED * 2;
+    const pageH = h + BLEED * 2;
+    const doc = new jsPDF({ unit: 'in', format: [pageW, pageH], orientation: 'portrait' });
+    let firstPage = true;
 
-    let first = true;
-    for (const chapter of allChapters) {
+    for (const chapter of BOOK_CHAPTERS) {
       for (const block of chapter.blocks) {
-        if (block.type === "slot") {
-          const record = illustrationsMap[block.slot_id];
-          if (!record?.image_url) continue;
-
-          if (!first) doc.addPage([totalW, totalH], "portrait");
-          first = false;
-
-          // Load image as base64
-          const res = await fetch(record.image_url);
-          const blob = await res.blob();
-          const b64 = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.readAsDataURL(blob);
-          });
-
-          const format = blob.type.includes("png") ? "PNG" : "JPEG";
-          doc.addImage(b64, format, 0, 0, totalW, totalH);
-        } else if (block.type === "text" && !first) {
-          doc.addPage([totalW, totalH], "portrait");
+        if (block.type === 'slot') {
+          const illus = illustrationMap[block.slot_id];
+          if (!firstPage) doc.addPage([pageW, pageH]);
+          firstPage = false;
+          if (illus?.image_url) {
+            const dataUrl = await loadImageAsDataUrl(illus.image_url);
+            doc.addImage(dataUrl, 'JPEG', 0, 0, pageW, pageH);
+          } else {
+            doc.setFillColor(240, 235, 220);
+            doc.rect(0, 0, pageW, pageH, 'F');
+            doc.setFontSize(10);
+            doc.setTextColor(160, 120, 80);
+            doc.text(`[EMPTY: ${block.slot_id}]`, pageW / 2, pageH / 2, { align: 'center' });
+            doc.setFontSize(7);
+            const lines = doc.splitTextToSize(block.label, pageW - 1);
+            doc.text(lines, pageW / 2, pageH / 2 + 0.3, { align: 'center' });
+          }
+        } else if (block.type === 'text') {
+          if (!firstPage) doc.addPage([pageW, pageH]);
+          firstPage = false;
+          doc.setFillColor(253, 249, 240);
+          doc.rect(0, 0, pageW, pageH, 'F');
           doc.setFontSize(14);
-          doc.setFont("times", "normal");
-          const lines = doc.splitTextToSize(block.content, w - 1);
-          doc.text(lines, totalW / 2, totalH / 2, { align: "center", baseline: "middle" });
+          doc.setTextColor(80, 50, 20);
+          const lines = doc.splitTextToSize(block.content, pageW - 1.5);
+          doc.text(lines, pageW / 2, pageH / 2 - (lines.length * 0.25), { align: 'center' });
         }
       }
     }
 
     const date = new Date().toISOString().slice(0, 10);
     doc.save(`JackieRoo_KDP_${date}.pdf`);
-    setPdfStatus("done");
-    setTimeout(() => setPdfStatus(null), 3000);
+    setPdfLoading(false);
   };
 
-  const handleZIP = async () => {
-    setZipStatus("loading");
+  const handleZipExport = async () => {
+    setZipLoading(true);
+    const JSZip = (await import('jszip')).default;
     const zip = new JSZip();
-
-    for (const chapter of allChapters) {
-      const chapterSlots = chapter.blocks.filter(b => b.type === "slot");
-      const folder = zip.folder(`${chapter.id}_${chapter.subtitle.replace(/\s+/g, "-")}`);
-
-      for (const block of chapterSlots) {
-        const record = illustrationsMap[block.slot_id];
-        if (!record?.image_url) continue;
-
-        const res = await fetch(record.image_url);
+    const chapterGroups = {};
+    for (const slot of placedSlots) {
+      const ch = slot.chapter;
+      if (!chapterGroups[ch]) chapterGroups[ch] = [];
+      chapterGroups[ch].push(slot);
+    }
+    for (const [chapter, slots] of Object.entries(chapterGroups)) {
+      const folder = zip.folder(chapter);
+      for (const slot of slots) {
+        const url = illustrationMap[slot.slot_id]?.image_url;
+        if (!url) continue;
+        const res = await fetch(url);
         const blob = await res.blob();
-        const ext = blob.type.includes("png") ? "png" : "jpg";
-        folder.file(`${block.slot_id}.${ext}`, blob);
+        const ext = blob.type.includes('png') ? 'png' : 'jpg';
+        folder.file(`${String(slot.order_index).padStart(3, '0')}_${slot.slot_id}.${ext}`, blob);
       }
     }
-
-    const content = await zip.generateAsync({ type: "blob" });
-    const url = URL.createObjectURL(content);
-    const a = document.createElement("a");
-    a.href = url;
+    const content = await zip.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(content);
     a.download = `JackieRoo_Canva_${new Date().toISOString().slice(0, 10)}.zip`;
     a.click();
-    URL.revokeObjectURL(url);
-    setZipStatus("done");
-    setTimeout(() => setZipStatus(null), 3000);
+    setZipLoading(false);
   };
 
   return (
-    <div className="py-8 space-y-6">
-      <div className="bg-white rounded-xl border border-amber-200 p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-amber-900 mb-1">Export</h2>
-        <p className="text-sm text-amber-600 mb-4">{placedSlots.length} of 33 slots have images placed.</p>
-
-        {/* Trim size */}
-        <div className="mb-5">
-          <label className="block text-sm font-semibold text-amber-800 mb-2">Trim Size</label>
-          <div className="flex gap-2">
-            {Object.entries(TRIM_SIZES).map(([key, val]) => (
-              <button
-                key={key}
-                onClick={() => setTrimSize(key)}
-                className={`px-3 py-1.5 rounded-lg text-sm border-2 font-medium transition-colors ${
-                  trimSize === key
-                    ? "border-amber-600 bg-amber-600 text-white"
-                    : "border-amber-200 text-amber-700 hover:border-amber-400"
-                }`}
-              >
-                {val.label}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-amber-500 mt-1">0.125" bleed on all sides applied automatically</p>
-        </div>
-
-        {/* Export buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Button
-            onClick={handlePDF}
-            disabled={pdfStatus === "loading" || placedSlots.length === 0}
-            className="bg-amber-800 hover:bg-amber-700 text-white h-12 flex items-center gap-2"
-          >
-            {pdfStatus === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> :
-             pdfStatus === "done" ? <CheckCircle className="w-4 h-4" /> :
-             <FileDown className="w-4 h-4" />}
-            KDP-Ready PDF
-          </Button>
-          <Button
-            onClick={handleZIP}
-            disabled={zipStatus === "loading" || placedSlots.length === 0}
-            variant="outline"
-            className="border-amber-300 text-amber-800 hover:bg-amber-50 h-12 flex items-center gap-2"
-          >
-            {zipStatus === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> :
-             zipStatus === "done" ? <CheckCircle className="w-4 h-4" /> :
-             <Package className="w-4 h-4" />}
-            Canva ZIP (by chapter)
-          </Button>
-        </div>
+    <div className="space-y-8">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-amber-900 mb-1">Export</h2>
+        <p className="text-amber-600 text-sm">{totalPlaced} of 33 illustrations placed</p>
       </div>
 
-      {/* Chapter summary */}
+      {/* Trim size selector */}
+      <div className="bg-amber-50 rounded-xl p-4 border border-amber-200">
+        <p className="text-sm font-semibold text-amber-800 mb-2">PDF Trim Size</p>
+        <div className="flex gap-2">
+          {Object.keys(TRIM_SIZES).map(size => (
+            <button key={size} onClick={() => setTrimSize(size)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${trimSize === size ? 'bg-amber-700 text-white' : 'bg-white border border-amber-300 text-amber-700 hover:bg-amber-100'}`}>
+              {size}"
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-amber-500 mt-2">Bleed: 0.125" all sides · Full-bleed illustration pages</p>
+      </div>
+
+      {/* Chapter overview */}
       <div className="space-y-3">
-        {allChapters.map((chapter) => {
-          const slots = chapter.blocks.filter(b => b.type === "slot");
-          const placed = slots.filter(b => illustrationsMap[b.slot_id]?.image_url);
+        {BOOK_CHAPTERS.map(chapter => {
+          const slots = SLOT_CONFIG.filter(s => s.chapter === chapter.chapterKey);
+          const placed = slots.filter(s => illustrationMap[s.slot_id]?.image_url).length;
           return (
-            <div key={chapter.id} className="bg-white rounded-xl border border-amber-100 overflow-hidden shadow-sm">
-              <div className="flex items-center justify-between px-4 py-3 bg-amber-50">
-                <div>
-                  <span className="font-semibold text-amber-900 text-sm">{chapter.title}</span>
-                  <span className="text-amber-600 text-sm ml-2">— {chapter.subtitle}</span>
-                </div>
-                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                  placed.length === slots.length
-                    ? "bg-green-100 text-green-700"
-                    : placed.length === 0
-                    ? "bg-amber-100 text-amber-600"
-                    : "bg-yellow-100 text-yellow-700"
-                }`}>
-                  {placed.length}/{slots.length}
-                </span>
+            <div key={chapter.id} className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 border border-amber-100">
+              {placed === slots.length
+                ? <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                : <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />}
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-amber-900">{chapter.title} — {chapter.subtitle}</p>
               </div>
-              <div className="grid grid-cols-6 gap-1.5 p-3">
-                {slots.map((block) => {
-                  const record = illustrationsMap[block.slot_id];
-                  return (
-                    <div
-                      key={block.slot_id}
-                      title={block.label}
-                      className={`rounded aspect-square flex items-center justify-center text-[8px] font-bold border ${
-                        record?.image_url
-                          ? "bg-green-400 border-green-500 text-white"
-                          : "bg-amber-100 border-dashed border-amber-300 text-amber-400"
-                      }`}
-                    >
-                      {record?.image_url ? "✓" : <AlertTriangle className="w-2.5 h-2.5" />}
-                    </div>
-                  );
-                })}
-              </div>
+              <span className="text-xs text-amber-600 font-mono">{placed}/{slots.length}</span>
             </div>
           );
         })}
+      </div>
+
+      {/* Export buttons */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <button
+          onClick={handlePdfExport}
+          disabled={pdfLoading}
+          className="flex flex-col items-center gap-2 p-6 rounded-xl bg-amber-700 hover:bg-amber-800 text-white transition-colors disabled:opacity-60"
+        >
+          <FileText className="w-8 h-8" />
+          <span className="font-bold">{pdfLoading ? 'Generating…' : 'Export KDP PDF'}</span>
+          <span className="text-xs text-amber-200">{trimSize}" · full-bleed · JackieRoo_KDP_[date].pdf</span>
+        </button>
+        <button
+          onClick={handleZipExport}
+          disabled={zipLoading}
+          className="flex flex-col items-center gap-2 p-6 rounded-xl bg-teal-700 hover:bg-teal-800 text-white transition-colors disabled:opacity-60"
+        >
+          <Archive className="w-8 h-8" />
+          <span className="font-bold">{zipLoading ? 'Zipping…' : 'Export Canva ZIP'}</span>
+          <span className="text-xs text-teal-200">One folder per chapter · JackieRoo_Canva_[date].zip</span>
+        </button>
       </div>
     </div>
   );
