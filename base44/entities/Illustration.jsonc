@@ -1,0 +1,36 @@
+{
+  "name": "Illustration",
+  "type": "object",
+  "properties": {
+    "slot_id": {
+      "type": "string",
+      "title": "Slot ID"
+    },
+    "chapter": {
+      "type": "string",
+      "title": "Chapter"
+    },
+    "label": {
+      "type": "string",
+      "title": "Label"
+    },
+    "image_url": {
+      "type": "string",
+      "title": "Image URL"
+    },
+    "order_index": {
+      "type": "number",
+      "title": "Order Index"
+    },
+    "placed_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Placed At"
+    }
+  },
+  "required": [
+    "slot_id",
+    "chapter",
+    "order_index"
+  ]
+}
