@@ -59,12 +59,112 @@ export default function ExportView({ illustrationMap }) {
         } else if (block.type === 'text') {
           if (!firstPage) doc.addPage([pageW, pageH]);
           firstPage = false;
-          doc.setFillColor(253, 249, 240);
+
+          // Warm parchment background
+          doc.setFillColor(255, 248, 230);
           doc.rect(0, 0, pageW, pageH, 'F');
-          doc.setFontSize(14);
-          doc.setTextColor(80, 50, 20);
-          const lines = doc.splitTextToSize(block.content, pageW - 1.5);
-          doc.text(lines, pageW / 2, pageH / 2 - (lines.length * 0.25), { align: 'center' });
+
+          // Decorative top band
+          doc.setFillColor(210, 140, 60);
+          doc.rect(0, 0, pageW, 0.18, 'F');
+          // Decorative bottom band
+          doc.setFillColor(210, 140, 60);
+          doc.rect(0, pageH - 0.18, pageW, 0.18, 'F');
+
+          // Thin inner lines
+          doc.setDrawColor(210, 140, 60);
+          doc.setLineWidth(0.015);
+          doc.line(0.25, 0.28, pageW - 0.25, 0.28);
+          doc.line(0.25, pageH - 0.28, pageW - 0.25, pageH - 0.28);
+
+          // Parse text: split on sound effects in (parens)
+          const rawText = block.content;
+          const sfxPalette = [
+            [220, 80, 40],   // red-orange
+            [40, 150, 180],  // teal
+            [180, 60, 160],  // purple
+            [60, 160, 80],   // green
+            [220, 160, 20],  // golden
+          ];
+          let sfxColorIndex = 0;
+
+          // Segment into normal text and sound effects
+          const segments = [];
+          const sfxRegex = /(\([^)]+\))/g;
+          let lastIdx = 0;
+          let match;
+          while ((match = sfxRegex.exec(rawText)) !== null) {
+            if (match.index > lastIdx) {
+              segments.push({ kind: 'text', value: rawText.slice(lastIdx, match.index) });
+            }
+            segments.push({ kind: 'sfx', value: match[1] });
+            lastIdx = match.index + match[0].length;
+          }
+          if (lastIdx < rawText.length) {
+            segments.push({ kind: 'text', value: rawText.slice(lastIdx) });
+          }
+
+          // Build display text with sfx markers replaced by ALLCAPS for sizing
+          const displayText = segments.map(s =>
+            s.kind === 'sfx' ? s.value.toUpperCase() : s.value
+          ).join('');
+
+          const margin = 0.75;
+          const textW = pageW - margin * 2;
+          const bodySize = 18;
+          doc.setFontSize(bodySize);
+          const allLines = doc.splitTextToSize(displayText, textW);
+          const lineH = 0.3;
+          const totalH = allLines.length * lineH;
+          let startY = (pageH - totalH) / 2 + 0.1;
+
+          // Draw each line, colouring sfx segments inline
+          // For simplicity, draw full lines in body colour, then overlay sfx in colour
+          doc.setFontSize(bodySize);
+          doc.setTextColor(80, 45, 15);
+          doc.text(allLines, pageW / 2, startY, { align: 'center', lineHeightFactor: 1.5 });
+
+          // Now overlay sound effects in colour + slightly bigger
+          // Re-parse to find sfx and draw over the top
+          let sfxIdx = 0;
+          for (const seg of segments) {
+            if (seg.kind !== 'sfx') continue;
+            const sfxColor = sfxPalette[sfxIdx % sfxPalette.length];
+            sfxIdx++;
+
+            const sfxDisplay = seg.value.toUpperCase();
+            // Find which line(s) contain this sfx by searching allLines
+            for (let li = 0; li < allLines.length; li++) {
+              if (allLines[li].includes(sfxDisplay.replace(/[()]/g, c => c))) {
+                const lineY = startY + li * lineH * 1.5;
+                // Draw a soft pill behind the sfx word
+                doc.setFontSize(bodySize + 2);
+                doc.setTextColor(...sfxColor);
+                // Find x position: measure text before sfx on this line
+                const lineText = allLines[li];
+                const sfxPos = lineText.indexOf(sfxDisplay.slice(0, 4));
+                if (sfxPos >= 0) {
+                  const before = lineText.slice(0, sfxPos);
+                  const beforeW = doc.getTextWidth(before);
+                  const sfxW = doc.getTextWidth(sfxDisplay);
+                  const lineFullW = doc.getTextWidth(lineText);
+                  const lineStartX = pageW / 2 - lineFullW / 2;
+                  const sfxX = lineStartX + beforeW + sfxW / 2;
+
+                  // Pill background
+                  const pillPad = 0.04;
+                  doc.setFillColor(...sfxColor.map(c => Math.min(255, c + 170)));
+                  doc.roundedRect(sfxX - sfxW / 2 - pillPad, lineY - 0.18, sfxW + pillPad * 2, 0.24, 0.04, 0.04, 'F');
+
+                  // Coloured text
+                  doc.text(sfxDisplay, sfxX, lineY, { align: 'center' });
+                }
+                break;
+              }
+            }
+          }
+          doc.setFontSize(bodySize);
+          doc.setTextColor(80, 45, 15);
         }
       }
     }
