@@ -1,7 +1,7 @@
 import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const TOTAL = 33;
+const TOTAL = 38;
 
 export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter }) {
 
