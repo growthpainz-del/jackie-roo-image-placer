@@ -1,17 +1,13 @@
-import { useRef } from 'react';
 import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const TOTAL = 33;
 
-export default function AppHeader({ view, setView, placedCount, onBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter }) {
-  const fileRef = useRef(null);
+export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter }) {
+
   const progress = Math.round((placedCount / TOTAL) * 100);
 
-  const handleFiles = (e) => {
-    if (e.target.files?.length) onBulkUpload(e.target.files);
-    e.target.value = '';
-  };
+
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-parchment border-b border-amber-200 shadow-sm">
@@ -35,11 +31,10 @@ export default function AppHeader({ view, setView, placedCount, onBulkUpload, on
                 <span className="hidden sm:inline">{bookmarkChapter ? `↩ ${bookmarkChapter}` : '↩ Resume'}</span>
               </button>
             )}
-            <button onClick={() => fileRef.current?.click()} className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-medium">
+            <button onClick={onOpenBulkUpload} className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-medium">
               <Upload className="w-3.5 h-3.5" />
               Bulk Upload
             </button>
-            <input ref={fileRef} type="file" multiple accept="image/*" className="hidden" onChange={handleFiles} />
           </div>
         </div>
 

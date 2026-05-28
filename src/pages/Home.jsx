@@ -9,6 +9,7 @@ import BookView from '@/components/BookView';
 import GalleryView from '@/components/GalleryView';
 import ExportView from '@/components/ExportView';
 import UnassignedTray from '@/components/UnassignedTray';
+import BulkUploadModal from '@/components/BulkUploadModal';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -17,6 +18,7 @@ export default function Home() {
     try { return JSON.parse(localStorage.getItem('jr_unassigned') || '[]'); } catch { return []; }
   });
   const [selectedUnassigned, setSelectedUnassigned] = useState(null);
+  const [showBulkModal, setShowBulkModal] = useState(false);
   const [bookmark, setBookmark] = useState(() => localStorage.getItem('jr_bookmark') ? Number(localStorage.getItem('jr_bookmark')) : null);
   const [bookmarkChapter, setBookmarkChapter] = useState(() => localStorage.getItem('jr_bookmark_chapter') || null);
   const scrollRef = useRef(null);
@@ -142,7 +144,7 @@ export default function Home() {
         <AppHeader
           view={view} setView={setView}
           placedCount={placedCount}
-          onBulkUpload={handleBulkUpload}
+          onOpenBulkUpload={() => setShowBulkModal(true)}
           onBookmark={handleBookmark}
           onGoToBookmark={handleGoToBookmark}
           bookmark={bookmark}
@@ -153,6 +155,12 @@ export default function Home() {
           {view === 'gallery' && <GalleryView {...sharedProps} />}
           {view === 'export'  && <ExportView  illustrationMap={illustrationMap} />}
         </main>
+        {showBulkModal && (
+          <BulkUploadModal
+            onUpload={(files) => handleBulkUpload(files)}
+            onClose={() => setShowBulkModal(false)}
+          />
+        )}
         <UnassignedTray
           unassigned={unassigned}
           selectedId={selectedUnassigned}
