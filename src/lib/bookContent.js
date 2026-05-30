@@ -12,7 +12,7 @@ export const BOOK_CHAPTERS = [
       { type: 'slot', slot_id: 'ch1-five-characters', order_index: 3, label: 'All five finished tin toy characters lined up on the kitchen table' },
       { type: 'text', content: 'Five characters sat in a cheerful row. Still. Eyes closed. Waiting. Jackie looked at them for a long moment. Then she reached for her pouch. "Just a pinch of magic will do," she whispered.' },
       { type: 'slot', slot_id: 'ch1-incantation', order_index: 4, label: 'Jackie kneeling on kitchen floor, glitter cascading from raised pan' },
-      { type: 'text', content: 'Jackie kneeled on the floor. She raised the pan. She tipped it — and glitter cascaded down in a golden waterfall. She took a deep breath.\n\n"Boopity Bloppity Bloop..."\n\nNothing happened.\n\nShe tried again. Louder. Firmer. Eyes squeezed shut.\n\n"BLIPPAHDY! BLOPPAHDEE! BLOOP!!"' },
+      { type: 'text', content: "Jackie kneeled on the floor. She reached into her front pouch \u2014 deep, past the acorns and the bottle cap and the very important rock \u2014 and pulled out the glitter. She tipped it \u2014 and it cascaded down in a golden waterfall. She took a deep breath.\n\n'Boopity Bloppity Bloop...'\n\nNothing happened.\n\nShe tried again. Louder. Firmer. Eyes squeezed shut.\n\n'BLIPPAHDY! BLOPPAHDEE! BLOOP!!'" },
       { type: 'slot', slot_id: 'ch1-scotchbot', order_index: 5, label: 'Scotch Bot coming to life — turquoise body, golden medallion spinning (whizz-beep!)' },
       { type: 'text', content: 'From tins and springs and swirly things — (whizz-beep!) — Scotch Bot!' },
       { type: 'slot', slot_id: 'ch1-bagpipebot', order_index: 6, label: 'Bagpipe Bot inflating — tartan kilt, tam o\'shanter flopping (toot-toot-wheeze!)' },
