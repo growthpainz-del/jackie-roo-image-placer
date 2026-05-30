@@ -1,4 +1,5 @@
 import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const TOTAL = 38;
@@ -31,6 +32,10 @@ export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload
                 <span className="hidden sm:inline">{bookmarkChapter ? `↩ ${bookmarkChapter}` : '↩ Resume'}</span>
               </button>
             )}
+            <Link to="/reader" className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white transition-colors font-medium">
+              <BookOpen className="w-3.5 h-3.5" />
+              Read
+            </Link>
             <button onClick={onOpenBulkUpload} className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-medium">
               <Upload className="w-3.5 h-3.5" />
               Bulk Upload
