@@ -3,7 +3,8 @@ import PDFExportModal from '@/components/PDFExportModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { BOOK_CHAPTERS } from '@/lib/bookContent';
-import { ChevronLeft, ChevronRight, X, BookOpen, Download, Flag } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, BookOpen, Download, Flag, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import FlagPanel from '@/components/FlagPanel';
 import { Link } from 'react-router-dom';
@@ -29,6 +30,7 @@ export default function Reader() {
   const [dragStart, setDragStart] = useState(null);
   const [showExport, setShowExport] = useState(false);
   const [showFlags, setShowFlags] = useState(false);
+  const navigate = useNavigate();
 
   const { data: flags = [] } = useQuery({
     queryKey: ['flags'],
@@ -96,9 +98,9 @@ export default function Reader() {
         <button onClick={() => setShowExport(true)} className="text-amber-400 hover:text-amber-200 transition-colors" title="Export PDF">
           <Download className="w-4 h-4" />
         </button>
-        <Link to="/" className="text-amber-400 hover:text-amber-200 transition-colors">
-          <X className="w-5 h-5" />
-        </Link>
+        <button onClick={() => navigate(-1)} className="text-amber-400 hover:text-amber-200 transition-colors" title="Go back">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Progress bar */}
