@@ -1,3 +1,17 @@
+// Jackie Roo & The Rainy Day Robots — written and illustrated by Amber Dawn
+// ⚠️ STRICT RULE: Never mention "the stump" anywhere in this file or in Base44.
+// The ancient tree in the back yard corner is visible in illustrations only.
+// It is never named. Readers discover it themselves. 🌳🤫
+//
+// REVEAL KICKER LINES — one per reveal image, locked:
+// ch1-reveal:       "Just add glitter."
+// ch2-reveal:       "Backstage pass."
+// ch3-birdbath:     "Love in full color."
+// ch4-reveal:       "Captain's log."
+// ch4-shed-reveal:  "Burst my bubble."
+// ch5-reveal:       "Dirty kids are happy kids."
+// finale-backyard:  "Your world is what you make it."
+
 export const BOOK_CHAPTERS = [
   {
     id: 'ch1',
@@ -92,6 +106,7 @@ export const BOOK_CHAPTERS = [
       { type: 'text', content: 'The Cloud Keeper offered a gift: a small glowing bottle. Inside — a bottled cloud that released a gentle (puff-puff) when you squeezed it softly. The characters hummed a lullaby. The windship descended toward the yard. The lights in the cottage glowed amber and warm.' },
       { type: 'pageturn' },
       { type: 'slot', slot_id: 'ch4-reveal', order_index: 31, label: 'CHAPTER 4 REVEAL — Jackie pulling red wagon in the rain. Dragonfly print tea towel as sail. Five tin toys inside.' },
+      { type: 'text', content: 'Behind the scenes and daydreams.\n\nThe green shed door was open just a crack. Jackie peered in.\n\nThe little fountain burbled softly on the counter. Soap bubbles drifted upward \u2014 slowly, slowly \u2014 and shaped themselves, one by one, into something that looked very much like turrets.\n\nCotton balls sat in a jar. Gold glitter caught the light.\n\n"Oh," said Jackie.' },
       { type: 'slot', slot_id: 'ch4-shed-reveal', order_index: 32, label: 'CHAPTER 4 REVEAL — inside the green shed. Plugin fountain burbling. Soap bubbles sculpting into castle turret shapes. Five still inanimate toys propped along the counter.' },
     ],
   },
