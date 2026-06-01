@@ -16,16 +16,16 @@ function saveUnassigned(items) {
 
 const SLOT_LABELS_TEXT = SLOT_CONFIG.map(s => `${s.slot_id}: ${s.label}`).join('\n');
 
-async function aiSuggest(imageUrl, imageName) {
+async function aiSuggest(imageUrl, imageName, extraKeywords = '') {
   const result = await base44.integrations.Core.InvokeLLM({
     prompt: `You are helping to place illustration images into the correct slots of a children's picture book called "Jackie Roo & The Rainy Day Robots".
 
 The image filename is: "${imageName}"
-
+${extraKeywords ? `\nExtra keywords / context provided by the user: ${extraKeywords}\n` : ''}
 Here are all the available illustration slots with their descriptions:
 ${SLOT_LABELS_TEXT}
 
-Based on the image content you can see and the filename, identify the TOP 3 best matching slots for this image.
+Based on the image content you can see, the filename, and any extra keywords, identify the TOP 3 best matching slots for this image.
 Return ONLY slot_ids from the list above — do not invent new ones.`,
     file_urls: [imageUrl],
     response_json_schema: {
@@ -57,6 +57,7 @@ export default function AssetManager() {
   const [analyzing, setAnalyzing] = useState({}); // { assetId: true }
   const [placing, setPlacing] = useState({}); // { assetId-slotId: true }
   const [placed, setPlaced] = useState({}); // { assetId: slot_id }
+  const [keywords, setKeywords] = useState({}); // { assetId: string }
   const [dragging, setDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
 
@@ -88,10 +89,10 @@ export default function AssetManager() {
   // ── AI suggest ──
   const handleAnalyze = useCallback(async (asset) => {
     setAnalyzing(prev => ({ ...prev, [asset.id]: true }));
-    const matches = await aiSuggest(asset.url, asset.name);
+    const matches = await aiSuggest(asset.url, asset.name, keywords[asset.id] || '');
     setSuggestions(prev => ({ ...prev, [asset.id]: matches }));
     setAnalyzing(prev => ({ ...prev, [asset.id]: false }));
-  }, []);
+  }, [keywords]);
 
   const handleAnalyzeAll = useCallback(async () => {
     const unanalyzed = assets.filter(a => !suggestions[a.id] && !placed[a.id]);
@@ -218,6 +219,15 @@ export default function AssetManager() {
                             </span>
                           ) : (
                             <>
+                              {/* Keywords input */}
+                              <input
+                                type="text"
+                                value={keywords[asset.id] || ''}
+                                onChange={e => setKeywords(prev => ({ ...prev, [asset.id]: e.target.value }))}
+                                onKeyDown={e => { if (e.key === 'Enter' && !isAnalyzing) handleAnalyze(asset); }}
+                                placeholder="Keywords (e.g. scotch bot, puddle)…"
+                                className="text-xs px-2 py-1 rounded border border-amber-200 bg-amber-50 placeholder-amber-300 text-amber-900 focus:outline-none focus:border-violet-400 w-44"
+                              />
                               <button
                                 onClick={() => handleAnalyze(asset)}
                                 disabled={isAnalyzing}
