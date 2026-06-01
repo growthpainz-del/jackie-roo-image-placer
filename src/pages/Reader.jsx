@@ -4,10 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { BOOK_CHAPTERS } from '@/lib/bookContent';
 import { ChevronLeft, ChevronRight, X, BookOpen, Download, Flag, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import FlagPanel from '@/components/FlagPanel';
-import { Link } from 'react-router-dom';
 
 // Flatten all blocks, skipping pageturns, tagging with chapter info
 const PAGES = [];
