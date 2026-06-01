@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
+import PDFExportModal from '@/components/PDFExportModal';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { BOOK_CHAPTERS } from '@/lib/bookContent';
-import { ChevronLeft, ChevronRight, X, BookOpen } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, BookOpen, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Flatten all blocks, skipping pageturns, tagging with chapter info
@@ -25,6 +26,7 @@ export default function Reader() {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [dragStart, setDragStart] = useState(null);
+  const [showExport, setShowExport] = useState(false);
 
   const { data: illustrations = [] } = useQuery({
     queryKey: ['illustrations'],
@@ -72,6 +74,9 @@ export default function Reader() {
           <span className="text-amber-500 ml-2 hidden sm:inline">{page.chapterSubtitle}</span>
         </div>
         <div className="text-xs text-amber-500">{index + 1} / {PAGES.length}</div>
+        <button onClick={() => setShowExport(true)} className="text-amber-400 hover:text-amber-200 transition-colors" title="Export PDF">
+          <Download className="w-4 h-4" />
+        </button>
         <Link to="/" className="text-amber-400 hover:text-amber-200 transition-colors">
           <X className="w-5 h-5" />
         </Link>
@@ -124,7 +129,10 @@ export default function Reader() {
           Next <ChevronRight className="w-5 h-5" />
         </button>
       </div>
-    </div>
+    {showExport && (
+      <PDFExportModal illustrationMap={illustrationMap} onClose={() => setShowExport(false)} />
+    )}
+  </div>
   );
 }
 
