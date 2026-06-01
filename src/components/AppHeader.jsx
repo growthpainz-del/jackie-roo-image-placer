@@ -1,4 +1,4 @@
-import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload } from 'lucide-react';
+import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
@@ -32,6 +32,10 @@ export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload
                 <span className="hidden sm:inline">{bookmarkChapter ? `↩ ${bookmarkChapter}` : '↩ Resume'}</span>
               </button>
             )}
+            <Link to="/assets" className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors font-medium">
+              <Sparkles className="w-3.5 h-3.5" />
+              Assets
+            </Link>
             <Link to="/reader" className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white transition-colors font-medium">
               <BookOpen className="w-3.5 h-3.5" />
               Read
