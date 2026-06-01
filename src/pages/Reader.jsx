@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
 import PDFExportModal from '@/components/PDFExportModal';
-import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { BOOK_CHAPTERS } from '@/lib/bookContent';
-import { ChevronLeft, ChevronRight, X, BookOpen, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, BookOpen, Download, Flag } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import FlagPanel from '@/components/FlagPanel';
 import { Link } from 'react-router-dom';
 
 // Flatten all blocks, skipping pageturns, tagging with chapter info
@@ -27,6 +28,14 @@ export default function Reader() {
   const [direction, setDirection] = useState(1);
   const [dragStart, setDragStart] = useState(null);
   const [showExport, setShowExport] = useState(false);
+  const [showFlags, setShowFlags] = useState(false);
+
+  const { data: flags = [] } = useQuery({
+    queryKey: ['flags'],
+    queryFn: () => base44.entities.Flag.list(),
+  });
+  const pageFlagCount = flags.filter(f => f.page_index === index && !f.resolved).length;
+  const totalUnresolved = flags.filter(f => !f.resolved).length;
 
   const { data: illustrations = [] } = useQuery({
     queryKey: ['illustrations'],
@@ -74,6 +83,16 @@ export default function Reader() {
           <span className="text-amber-500 ml-2 hidden sm:inline">{page.chapterSubtitle}</span>
         </div>
         <div className="text-xs text-amber-500">{index + 1} / {PAGES.length}</div>
+        <button
+          onClick={() => setShowFlags(v => !v)}
+          className="relative text-amber-400 hover:text-amber-200 transition-colors"
+          title="Flag an issue"
+        >
+          <Flag className="w-4 h-4" />
+          {pageFlagCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">{pageFlagCount}</span>
+          )}
+        </button>
         <button onClick={() => setShowExport(true)} className="text-amber-400 hover:text-amber-200 transition-colors" title="Export PDF">
           <Download className="w-4 h-4" />
         </button>
@@ -129,6 +148,14 @@ export default function Reader() {
           Next <ChevronRight className="w-5 h-5" />
         </button>
       </div>
+      {showFlags && (
+        <FlagPanel
+          page={page}
+          pageIndex={index}
+          flags={flags}
+          onClose={() => setShowFlags(false)}
+        />
+      )}
     {showExport && (
       <PDFExportModal illustrationMap={illustrationMap} onClose={() => setShowExport(false)} />
     )}

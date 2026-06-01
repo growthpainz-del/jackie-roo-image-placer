@@ -1,0 +1,31 @@
+{
+  "name": "Flag",
+  "type": "object",
+  "properties": {
+    "page_index": {
+      "type": "number",
+      "title": "Page Index"
+    },
+    "slot_id": {
+      "type": "string",
+      "title": "Slot ID"
+    },
+    "chapter_title": {
+      "type": "string",
+      "title": "Chapter Title"
+    },
+    "note": {
+      "type": "string",
+      "title": "Note"
+    },
+    "resolved": {
+      "type": "boolean",
+      "title": "Resolved",
+      "default": false
+    }
+  },
+  "required": [
+    "page_index",
+    "note"
+  ]
+}
