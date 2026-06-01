@@ -35,7 +35,7 @@ export const BOOK_CHAPTERS = [
     chapterKey: 'Ch2',
     blocks: [
       { type: 'slot', slot_id: 'ch2-wagon', order_index: 11, label: 'Jackie pulling the red wagon through the back yard — five characters piled in' },
-      { type: 'text', content: 'The back yard was perfect in the rain. Jackie pulled the red wagon through the wet grass, five characters piled in and holding on. She had one destination in mind. The ancient stump in the bottom-left corner. Her most sacred spot.' },
+      { type: 'text', content: 'The back yard was perfect in the rain. Jackie pulled the red wagon through the wet grass, five characters piled in and holding on. She had one destination in mind.' },
       { type: 'slot', slot_id: 'ch2-oak-greeting', order_index: 12, label: 'Jackie pressing both palms flat against the ancient stump — face close, eyes closed' },
       { type: 'text', content: 'She pressed both palms flat against the bark. Face close. Eyes closed. "Hello," she said quietly. "I brought everyone." The stump said nothing. But something answered.' },
       { type: 'slot', slot_id: 'ch2-oak-pocket', order_index: 13, label: 'Jackie crouching at the base of the stump — reaching down to pick up a single glowing acorn' },
