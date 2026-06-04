@@ -42,7 +42,7 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
           <div
             ref={provided.innerRef}
             {...provided.droppableProps}
-            className={`relative w-full rounded-xl overflow-hidden border-2 transition-all ${
+            className={`relative w-full rounded-xl border-2 transition-all ${
               snapshot.isDraggingOver ? 'border-amber-400 bg-amber-50 scale-[1.01]' :
               hasImage ? 'border-transparent' : 'border-dashed border-amber-300 bg-amber-50/50'
             }`}
@@ -52,23 +52,23 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
                 <img
                   src={illustration.image_url}
                   alt={slot.label}
-                  className="w-full object-cover rounded-xl"
+                  className="w-full object-cover rounded-xl overflow-hidden"
                   onLoad={handleImageLoad}
                 />
-                {imgDims && (
-                  <div className={`absolute top-2 right-2 flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
-                    isLowRes ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white'
-                  }`}>
-                    {isLowRes ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
-                    {imgDims.w}×{imgDims.h}
-                  </div>
-                )}
                 <button
                   onClick={() => onRemove(slot.slot_id)}
                   className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 bg-black/60 text-white rounded-full p-1 transition-opacity"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
+                {imgDims && (
+                  <div className={`absolute bottom-2 right-2 flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium shadow ${
+                    isLowRes ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white'
+                  }`}>
+                    {isLowRes ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
+                    {imgDims.w}×{imgDims.h}
+                  </div>
+                )}
               </div>
             ) : (
               <button
