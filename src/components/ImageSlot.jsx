@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
+import { normalizeDriveUrl } from '@/lib/driveUrl';
 import { Upload, X, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 const MIN_DIM = 4096;
@@ -50,7 +51,7 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
             {hasImage ? (
               <div className="relative group">
                 <img
-                  src={illustration.image_url}
+                  src={normalizeDriveUrl(illustration.image_url)}
                   alt={slot.label}
                   className="w-full object-cover rounded-xl overflow-hidden"
                   onLoad={handleImageLoad}
@@ -112,7 +113,7 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
         >
           {hasImage ? (
             <div className="relative group w-full h-full">
-              <img src={illustration.image_url} alt={slot.label} className="w-full h-full object-cover" onLoad={handleImageLoad} />
+              <img src={normalizeDriveUrl(illustration.image_url)} alt={slot.label} className="w-full h-full object-cover" onLoad={handleImageLoad} />
               {imgDims && (
                 <div className={`absolute bottom-1 left-0 right-0 mx-1 flex items-center justify-center gap-0.5 text-[9px] px-1 py-0.5 rounded font-bold ${
                   isLowRes ? 'bg-red-500/90 text-white' : 'bg-emerald-500/90 text-white'

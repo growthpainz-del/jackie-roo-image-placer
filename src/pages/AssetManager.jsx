@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { SLOT_CONFIG } from '@/lib/slotConfig';
+import { normalizeDriveUrl } from '@/lib/driveUrl';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Upload, Sparkles, CheckCircle, X, Loader2, AlertCircle, RefreshCw } from 'lucide-react';
 
@@ -73,7 +74,7 @@ export default function AssetManager() {
     const newItems = await Promise.all(
       Array.from(files).filter(f => f.type.startsWith('image/')).map(async (file) => {
         const { file_url } = await base44.integrations.Core.UploadFile({ file });
-        return { id: `${Date.now()}-${file.name}`, name: file.name, url: file_url };
+        return { id: `${Date.now()}-${file.name}`, name: file.name, url: normalizeDriveUrl(file_url) };
       })
     );
     const updated = [...assets, ...newItems];

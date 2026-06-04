@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { normalizeDriveUrl } from '@/lib/driveUrl';
 import { SLOT_CONFIG, CHAPTER_META } from '@/lib/slotConfig';
 import { Upload, X, Eye, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -13,7 +14,7 @@ function PreviewModal({ url, label, onClose }) {
         <button onClick={onClose} className="absolute -top-8 right-0 text-white/70 hover:text-white">
           <X className="w-5 h-5" />
         </button>
-        <img src={url} alt={label} className="w-full rounded-xl object-contain max-h-[80vh]" />
+        <img src={normalizeDriveUrl(url)} alt={label} className="w-full rounded-xl object-contain max-h-[80vh]" />
         <p className="text-white/60 text-xs mt-2 text-center leading-snug">{label}</p>
       </div>
     </div>
@@ -48,7 +49,7 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
           {hasImage ? (
             <>
               <img
-                src={illustration.image_url}
+                src={normalizeDriveUrl(illustration.image_url)}
                 alt={slot.label}
                 className="w-full h-full object-cover"
                 loading="lazy"
