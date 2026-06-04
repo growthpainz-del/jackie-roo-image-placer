@@ -48,9 +48,10 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
           {hasImage ? (
             <>
               <img
-                src={illustration.image_url}
+                src={`${illustration.image_url}?w=96`}
                 alt={slot.label}
                 className="w-full h-full object-cover"
+                loading="lazy"
                 onLoad={e => setImgDims({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
               />
               {/* low-res dot */}
