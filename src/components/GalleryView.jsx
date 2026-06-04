@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { SLOT_CONFIG, CHAPTER_META } from '@/lib/slotConfig';
 import { Upload, X, Eye, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
@@ -106,33 +106,62 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
 }
 
 export default function GalleryView({ illustrationMap, onUpload, onRemove }) {
+  const [chapterIndex, setChapterIndex] = useState(0);
+  const chapterKey = CHAPTERS[chapterIndex];
+  const slots = SLOT_CONFIG.filter(s => s.chapter === chapterKey);
+  const meta = CHAPTER_META[chapterKey];
+  const placed = slots.filter(s => illustrationMap[s.slot_id]?.image_url).length;
+
   return (
-    <div className="space-y-8">
-      {CHAPTERS.map(chapterKey => {
-        const slots = SLOT_CONFIG.filter(s => s.chapter === chapterKey);
-        const meta = CHAPTER_META[chapterKey];
-        const placed = slots.filter(s => illustrationMap[s.slot_id]?.image_url).length;
-        return (
-          <section key={chapterKey} data-chapter={chapterKey}>
-            <div className="flex items-baseline gap-3 mb-3 pb-2 border-b border-amber-200">
-              <h2 className="text-sm font-bold text-amber-900">{meta?.title || chapterKey}</h2>
-              <span className="text-xs text-amber-600 hidden sm:inline">{meta?.subtitle}</span>
-              <span className="ml-auto text-xs text-amber-500">{placed}/{slots.length}</span>
-            </div>
-            <div className="space-y-1.5">
-              {slots.map(slot => (
-                <SlotRow
-                  key={slot.slot_id}
-                  slot={slot}
-                  illustration={illustrationMap[slot.slot_id]}
-                  onUpload={onUpload}
-                  onRemove={onRemove}
-                />
-              ))}
-            </div>
-          </section>
-        );
-      })}
+    <div>
+      {/* Chapter nav */}
+      <div className="flex items-center justify-between mb-4 pb-2 border-b border-amber-200">
+        <button
+          onClick={() => setChapterIndex(i => Math.max(0, i - 1))}
+          disabled={chapterIndex === 0}
+          className="px-3 py-1 text-xs rounded bg-amber-100 hover:bg-amber-200 text-amber-800 disabled:opacity-30 transition-colors"
+        >
+          ← Prev
+        </button>
+        <div className="text-center">
+          <p className="text-sm font-bold text-amber-900">{meta?.title || chapterKey}</p>
+          <p className="text-xs text-amber-500">{meta?.subtitle}</p>
+        </div>
+        <button
+          onClick={() => setChapterIndex(i => Math.min(CHAPTERS.length - 1, i + 1))}
+          disabled={chapterIndex === CHAPTERS.length - 1}
+          className="px-3 py-1 text-xs rounded bg-amber-100 hover:bg-amber-200 text-amber-800 disabled:opacity-30 transition-colors"
+        >
+          Next →
+        </button>
+      </div>
+
+      {/* Chapter dots */}
+      <div className="flex justify-center gap-1.5 mb-4">
+        {CHAPTERS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setChapterIndex(i)}
+            className={`w-2 h-2 rounded-full transition-colors ${i === chapterIndex ? 'bg-amber-700' : 'bg-amber-200'}`}
+          />
+        ))}
+      </div>
+
+      {/* Progress */}
+      <p className="text-right text-xs text-amber-500 mb-3">{placed}/{slots.length} placed</p>
+
+      {/* Slot list */}
+      <div className="space-y-1.5" data-chapter={chapterKey}>
+        {slots.map(slot => (
+          <SlotRow
+            key={slot.slot_id}
+            slot={slot}
+            illustration={illustrationMap[slot.slot_id]}
+            onUpload={onUpload}
+            onRemove={onRemove}
+          />
+        ))}
+      </div>
     </div>
   );
 }
