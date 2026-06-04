@@ -45,15 +45,14 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
         hasImage ? 'border-emerald-200 bg-white' : 'border-amber-200 bg-amber-50/40'
       }`}>
         {/* Thumbnail or upload button */}
-        <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-amber-100 flex items-center justify-center relative">
+        <div className="w-12 h-12 rounded-md overflow-hidden flex-shrink-0 bg-amber-100 flex items-center justify-center relative" style={{minWidth:'3rem',minHeight:'3rem'}}>
           {hasImage ? (
             <>
               <img
                 src={normalizeDriveUrl(illustration.image_url)}
                 alt={slot.label}
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 onLoad={e => setImgDims({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
-                onError={e => { e.target.style.display = 'none'; }}
               />
               {/* low-res dot */}
               {imgDims && (
