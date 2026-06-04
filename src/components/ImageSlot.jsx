@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import { Droppable } from '@hello-pangea/dnd';
-import { Upload, X, AlertTriangle } from 'lucide-react';
+import { Upload, X, AlertTriangle, CheckCircle2 } from 'lucide-react';
+
+const MIN_DIM = 4096;
 
 export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTray, onRemove, selectedUnassigned, setSelectedUnassigned, layout }) {
   const fileRef = useRef(null);
   const [uploading, setUploading] = useState(false);
-  const [lowRes, setLowRes] = useState(false);
+  const [imgDims, setImgDims] = useState(null); // { w, h }
 
   const hasImage = !!illustration?.image_url;
 
@@ -28,8 +30,10 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
 
   const handleImageLoad = (e) => {
     const { naturalWidth, naturalHeight } = e.target;
-    setLowRes(naturalWidth < 2550 || naturalHeight < 2550);
+    setImgDims({ w: naturalWidth, h: naturalHeight });
   };
+
+  const isLowRes = imgDims ? (imgDims.w < MIN_DIM || imgDims.h < MIN_DIM) : false;
 
   if (layout === 'book') {
     return (
@@ -51,9 +55,12 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
                   className="w-full object-cover rounded-xl"
                   onLoad={handleImageLoad}
                 />
-                {lowRes && (
-                  <div className="absolute top-2 right-2 flex items-center gap-1 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-medium">
-                    <AlertTriangle className="w-3 h-3" /> Low res
+                {imgDims && (
+                  <div className={`absolute top-2 right-2 flex items-center gap-1 text-xs px-2 py-1 rounded-full font-medium ${
+                    isLowRes ? 'bg-red-500 text-white' : 'bg-emerald-500 text-white'
+                  }`}>
+                    {isLowRes ? <AlertTriangle className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3" />}
+                    {imgDims.w}×{imgDims.h}
                   </div>
                 )}
                 <button
@@ -106,8 +113,13 @@ export default function ImageSlot({ slot, illustration, onUpload, onAssignFromTr
           {hasImage ? (
             <div className="relative group w-full h-full">
               <img src={illustration.image_url} alt={slot.label} className="w-full h-full object-cover" onLoad={handleImageLoad} />
-              {lowRes && (
-                <div className="absolute top-1 right-1 bg-yellow-400 text-yellow-900 text-[9px] px-1.5 py-0.5 rounded-full font-bold">LR</div>
+              {imgDims && (
+                <div className={`absolute bottom-1 left-0 right-0 mx-1 flex items-center justify-center gap-0.5 text-[9px] px-1 py-0.5 rounded font-bold ${
+                  isLowRes ? 'bg-red-500/90 text-white' : 'bg-emerald-500/90 text-white'
+                }`}>
+                  {isLowRes ? <AlertTriangle className="w-2.5 h-2.5 shrink-0" /> : <CheckCircle2 className="w-2.5 h-2.5 shrink-0" />}
+                  {imgDims.w}×{imgDims.h}
+                </div>
               )}
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                 <button onClick={() => onRemove(slot.slot_id)} className="opacity-0 group-hover:opacity-100 bg-white/80 rounded-full p-1.5 transition-opacity">
