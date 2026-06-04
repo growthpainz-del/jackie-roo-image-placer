@@ -52,8 +52,8 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
                 src={normalizeDriveUrl(illustration.image_url)}
                 alt={slot.label}
                 className="w-full h-full object-cover"
-                loading="lazy"
                 onLoad={e => setImgDims({ w: e.target.naturalWidth, h: e.target.naturalHeight })}
+                onError={e => { e.target.style.display = 'none'; }}
               />
               {/* low-res dot */}
               {imgDims && (
