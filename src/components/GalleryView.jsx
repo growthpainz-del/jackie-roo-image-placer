@@ -48,7 +48,7 @@ function SlotRow({ slot, illustration, onUpload, onRemove }) {
           {hasImage ? (
             <>
               <img
-                src={`${illustration.image_url}?w=96`}
+                src={illustration.image_url}
                 alt={slot.label}
                 className="w-full h-full object-cover"
                 loading="lazy"
