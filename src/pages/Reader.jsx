@@ -3,10 +3,11 @@ import PDFExportModal from '@/components/PDFExportModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { BOOK_CHAPTERS } from '@/lib/bookContent';
-import { ChevronLeft, ChevronRight, X, BookOpen, Download, Flag, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Download, Flag, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import FlagPanel from '@/components/FlagPanel';
+import { MOOD_MAP } from '@/components/BeatTagger';
 
 // Flatten all blocks, skipping pageturns, tagging with chapter info
 const PAGES = [];
@@ -55,6 +56,12 @@ export default function Reader() {
   });
   const illustrationMap = Object.fromEntries(illustrations.map(i => [i.slot_id, i]));
 
+  const { data: beatTags = [] } = useQuery({
+    queryKey: ['beat-tags'],
+    queryFn: () => base44.entities.BeatTag.list(),
+  });
+  const beatMap = Object.fromEntries(beatTags.map(t => [t.block_ref, t]));
+
   const go = useCallback((dir) => {
     setDirection(dir);
     setIndex(i => Math.max(0, Math.min(PAGES.length - 1, i + dir)));
@@ -79,6 +86,9 @@ export default function Reader() {
   const page = PAGES[index];
   const illustration = page.type === 'slot' ? illustrationMap[page.slot_id] : null;
   const progress = Math.round(((index + 1) / PAGES.length) * 100);
+  const beatTag = page.type === 'slot'
+    ? beatMap[page.slot_id]
+    : beatMap[`${page.chapterId}:text:${PAGES.slice(0, index).filter(p => p.chapterId === page.chapterId && p.type === 'text').length}`] || null;
 
   return (
     <div
@@ -132,9 +142,9 @@ export default function Reader() {
             className="absolute inset-0 flex flex-col items-center justify-center p-6"
           >
             {page.type === 'slot' ? (
-              <SlotPage page={page} illustration={illustration} />
+              <SlotPage page={page} illustration={illustration} beatTag={beatTag} />
             ) : (
-              <TextPage page={page} />
+              <TextPage page={page} beatTag={beatTag} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -175,14 +185,34 @@ export default function Reader() {
   );
 }
 
-function SlotPage({ page, illustration }) {
+function BeatBadge({ beatTag }) {
+  if (!beatTag) return null;
+  const mood = MOOD_MAP[beatTag.mood];
+  if (!mood) return null;
+  return (
+    <div
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-white text-xs font-semibold shadow-lg backdrop-blur-sm"
+      style={{ backgroundColor: mood.color + 'cc' }}
+    >
+      <span className="text-base leading-none">{mood.emoji}</span>
+      <span>{mood.label}</span>
+      <span className="opacity-70">·</span>
+      <span>{beatTag.intensity}/10</span>
+      {beatTag.note && (
+        <span className="opacity-70 italic max-w-[120px] truncate hidden sm:inline">— {beatTag.note}</span>
+      )}
+    </div>
+  );
+}
+
+function SlotPage({ page, illustration, beatTag }) {
   const hasImage = illustration?.image_url;
   const isReveal = page.slot_id?.includes('-reveal') || page.slot_id?.includes('finale-backyard');
 
   return (
     <div className="w-full max-w-2xl flex flex-col items-center gap-4 h-full justify-center">
       {/* Image area */}
-      <div className={`w-full flex-1 max-h-[60vh] rounded-xl overflow-hidden flex items-center justify-center ${
+      <div className={`relative w-full flex-1 max-h-[60vh] rounded-xl overflow-hidden flex items-center justify-center ${
         isReveal ? 'border-2 border-amber-700/40' : 'border border-gray-700'
       } bg-gray-900`}>
         {hasImage ? (
@@ -200,6 +230,12 @@ function SlotPage({ page, illustration }) {
             <p className="text-gray-500 text-sm max-w-xs">{page.label}</p>
           </div>
         )}
+        {/* Beat badge overlaid on image */}
+        {beatTag && (
+          <div className="absolute bottom-3 left-3">
+            <BeatBadge beatTag={beatTag} />
+          </div>
+        )}
       </div>
 
       {/* Caption */}
@@ -212,10 +248,24 @@ function SlotPage({ page, illustration }) {
   );
 }
 
-function TextPage({ page }) {
+function TextPage({ page, beatTag }) {
+  const mood = beatTag ? MOOD_MAP[beatTag.mood] : null;
   return (
-    <div className="w-full max-w-xl text-center">
-      <p className="text-amber-50 font-book text-lg sm:text-xl leading-relaxed whitespace-pre-line">
+    <div className="w-full max-w-xl flex flex-col items-center gap-5">
+      {/* Emotional beat strip */}
+      {mood && (
+        <div
+          className="w-full rounded-lg px-4 py-3 flex items-center gap-3"
+          style={{ backgroundColor: mood.color + '22', borderLeft: `3px solid ${mood.color}` }}
+        >
+          <span className="text-2xl">{mood.emoji}</span>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: mood.color }}>{mood.label} · {beatTag.intensity}/10</p>
+            {beatTag.note && <p className="text-xs text-gray-400 italic mt-0.5">{beatTag.note}</p>}
+          </div>
+        </div>
+      )}
+      <p className="text-amber-50 font-book text-lg sm:text-xl leading-relaxed whitespace-pre-line text-center">
         {page.content}
       </p>
     </div>
