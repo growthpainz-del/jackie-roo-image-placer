@@ -11,6 +11,7 @@ import ExportView from '@/components/ExportView';
 import UnassignedTray from '@/components/UnassignedTray';
 import BulkUploadModal from '@/components/BulkUploadModal';
 import ChapterIndex from '@/components/ChapterIndex';
+import StoryArc from '@/components/StoryArc';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -154,6 +155,7 @@ export default function Home() {
         <main ref={scrollRef} className="max-w-3xl mx-auto px-4 pt-24 pb-16">
           {view === 'book' && (
             <>
+              <StoryArc />
               <ChapterIndex
                 illustrationMap={illustrationMap}
                 onJump={(chapterId) => {
