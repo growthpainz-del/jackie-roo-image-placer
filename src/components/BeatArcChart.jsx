@@ -1,8 +1,23 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 import { MOOD_MAP } from '@/components/BeatTagger';
 import { MANUSCRIPT } from '@/lib/manuscript';
+import { BOOK_CHAPTERS } from '@/lib/bookContent';
+
+// Build flat PAGES array (same logic as Reader) to get page indexes by block_ref
+const READER_PAGES = [];
+BOOK_CHAPTERS.forEach((ch) => {
+  ch.blocks.forEach((block) => {
+    if (block.type === 'pageturn') return;
+    READER_PAGES.push({ ...block, chapterId: ch.id });
+  });
+});
+const PAGE_INDEX_BY_REF = {};
+READER_PAGES.forEach((p, i) => {
+  if (p.slot_id) PAGE_INDEX_BY_REF[p.slot_id] = i;
+});
 
 const W = 700;
 const H = 160;
@@ -164,9 +179,17 @@ export default function BeatArcChart({ onJump }) {
           <div className="flex items-start gap-3">
             <span className="text-xl leading-none mt-0.5">{activeMood?.emoji}</span>
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <p className="text-xs font-bold" style={{ color: activeMood?.color }}>{activeMood?.label}</p>
                 <span className="text-[10px] text-amber-500">intensity {activePoint.tag.intensity}/10</span>
+                {PAGE_INDEX_BY_REF[activePoint.tag.block_ref] !== undefined && (
+                  <Link
+                    to={`/reader?page=${PAGE_INDEX_BY_REF[activePoint.tag.block_ref]}`}
+                    className="ml-auto text-[10px] px-2 py-0.5 rounded-full bg-amber-700 hover:bg-amber-800 text-white font-medium transition-colors flex-shrink-0"
+                  >
+                    Open in Reader →
+                  </Link>
+                )}
               </div>
               <p className="text-[11px] text-amber-700 leading-snug truncate">{activePoint.tag.label_snapshot}</p>
               {activePoint.tag.note && <p className="text-[10px] text-amber-400 italic mt-0.5">"{activePoint.tag.note}"</p>}

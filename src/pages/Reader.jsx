@@ -23,8 +23,19 @@ const variants = {
   exit: (dir) => ({ x: dir > 0 ? '-100%' : '100%', opacity: 0 }),
 };
 
+// Build page index lookup by block_ref (slot_id or chapter:text:blockIndex pattern)
+const PAGE_INDEX_BY_REF = {};
+PAGES.forEach((p, i) => {
+  if (p.slot_id) PAGE_INDEX_BY_REF[p.slot_id] = i;
+});
+
 export default function Reader() {
-  const [index, setIndex] = useState(0);
+  const initialIndex = (() => {
+    const params = new URLSearchParams(window.location.search);
+    const p = params.get('page');
+    return p !== null ? Math.max(0, Math.min(PAGES.length - 1, Number(p))) : 0;
+  })();
+  const [index, setIndex] = useState(initialIndex);
   const [direction, setDirection] = useState(1);
   const [dragStart, setDragStart] = useState(null);
   const [showExport, setShowExport] = useState(false);
