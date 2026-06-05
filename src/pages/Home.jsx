@@ -10,6 +10,7 @@ import GalleryView from '@/components/GalleryView';
 import ExportView from '@/components/ExportView';
 import UnassignedTray from '@/components/UnassignedTray';
 import BulkUploadModal from '@/components/BulkUploadModal';
+import ChapterIndex from '@/components/ChapterIndex';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -151,7 +152,18 @@ export default function Home() {
           bookmarkChapter={bookmarkChapter}
         />
         <main ref={scrollRef} className="max-w-3xl mx-auto px-4 pt-24 pb-16">
-          {view === 'book'    && <BookView    {...sharedProps} />}
+          {view === 'book' && (
+            <>
+              <ChapterIndex
+                illustrationMap={illustrationMap}
+                onJump={(chapterId) => {
+                  const el = document.querySelector(`[data-chapter="${chapterId}"]`);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              />
+              <BookView {...sharedProps} />
+            </>
+          )}
           {view === 'gallery' && <GalleryView {...sharedProps} />}
           {view === 'export'  && <ExportView  illustrationMap={illustrationMap} />}
         </main>

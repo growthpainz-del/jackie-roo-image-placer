@@ -5,7 +5,7 @@ export default function BookView({ illustrationMap, onUpload, onAssignFromTray, 
   return (
     <div className="space-y-0">
       {BOOK_CHAPTERS.map((chapter) => (
-        <section key={chapter.id} data-chapter={chapter.chapterKey} className="mb-12">
+        <section key={chapter.id} data-chapter={chapter.id} className="mb-12">
           {/* Chapter header */}
           <div className="text-center py-8 mb-6 border-b border-amber-200">
             <p className="text-xs uppercase tracking-widest text-amber-500 mb-1">{chapter.title}</p>
