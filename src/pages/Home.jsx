@@ -12,6 +12,7 @@ import UnassignedTray from '@/components/UnassignedTray';
 import BulkUploadModal from '@/components/BulkUploadModal';
 import ChapterIndex from '@/components/ChapterIndex';
 import StoryArc from '@/components/StoryArc';
+import BeatArcChart from '@/components/BeatArcChart';
 import ProofReader from '@/components/ProofReader';
 
 export default function Home() {
@@ -161,6 +162,12 @@ export default function Home() {
               <StoryArc />
               <ChapterIndex
                 illustrationMap={illustrationMap}
+                onJump={(chapterId) => {
+                  const el = document.querySelector(`[data-chapter="${chapterId}"]`);
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+              />
+              <BeatArcChart
                 onJump={(chapterId) => {
                   const el = document.querySelector(`[data-chapter="${chapterId}"]`);
                   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });

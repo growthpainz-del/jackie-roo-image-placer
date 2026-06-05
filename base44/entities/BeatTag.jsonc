@@ -1,0 +1,58 @@
+{
+  "name": "BeatTag",
+  "type": "object",
+  "properties": {
+    "block_ref": {
+      "type": "string",
+      "title": "Block Reference",
+      "description": "slot_id or text block identifier (chapter_id:text_index)"
+    },
+    "chapter_id": {
+      "type": "string",
+      "title": "Chapter ID"
+    },
+    "order_index": {
+      "type": "number",
+      "title": "Order Index",
+      "description": "Narrative position (0-100 scale)"
+    },
+    "mood": {
+      "type": "string",
+      "title": "Mood",
+      "enum": [
+        "wonder",
+        "joy",
+        "tension",
+        "calm",
+        "comedy",
+        "tenderness",
+        "discovery",
+        "peak",
+        "melancholy",
+        "excitement"
+      ],
+      "description": "Emotional tone"
+    },
+    "intensity": {
+      "type": "number",
+      "title": "Intensity",
+      "description": "Narrative intensity 1-10"
+    },
+    "note": {
+      "type": "string",
+      "title": "Note",
+      "description": "Optional editorial note about this beat"
+    },
+    "label_snapshot": {
+      "type": "string",
+      "title": "Label Snapshot",
+      "description": "Truncated text/slot label at time of tagging"
+    }
+  },
+  "required": [
+    "block_ref",
+    "chapter_id",
+    "intensity",
+    "mood"
+  ]
+}
