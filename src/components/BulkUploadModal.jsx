@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { Upload, X, GripHorizontal } from 'lucide-react';
 
 export default function BulkUploadModal({ onUpload, onClose }) {
-  const [pos, setPos] = useState({ x: window.innerWidth / 2 - 180, y: 100 });
+  const [pos, setPos] = useState(null); // null = centered via CSS
   const [files, setFiles] = useState([]);
   const [draggingOver, setDraggingOver] = useState(false);
   const dragOrigin = useRef(null);
@@ -12,7 +12,11 @@ export default function BulkUploadModal({ onUpload, onClose }) {
   const onHeaderMouseDown = useCallback((e) => {
     if (e.button !== 0) return;
     e.preventDefault();
-    dragOrigin.current = { mx: e.clientX, my: e.clientY, px: pos.x, py: pos.y };
+    const rect = e.currentTarget.closest('.bulk-modal')?.getBoundingClientRect();
+    const px = rect ? rect.left : (window.innerWidth / 2 - 180);
+    const py = rect ? rect.top : 100;
+    dragOrigin.current = { mx: e.clientX, my: e.clientY, px, py };
+    if (!pos) setPos({ x: px, y: py });
 
     const onMouseMove = (ev) => {
       const dx = ev.clientX - dragOrigin.current.mx;
@@ -48,10 +52,14 @@ export default function BulkUploadModal({ onUpload, onClose }) {
     onClose();
   };
 
+  const posStyle = pos
+    ? { left: pos.x, top: pos.y }
+    : { left: '50%', top: '120px', transform: 'translateX(-50%)' };
+
   return (
     <div
-      className="fixed z-50 w-80 bg-white rounded-xl shadow-2xl border border-amber-200 select-none"
-      style={{ left: pos.x, top: pos.y }}
+      className="bulk-modal fixed z-50 w-80 bg-white rounded-xl shadow-2xl border border-amber-200 select-none"
+      style={posStyle}
     >
       {/* Header / drag handle */}
       <div
