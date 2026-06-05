@@ -12,6 +12,7 @@ import UnassignedTray from '@/components/UnassignedTray';
 import BulkUploadModal from '@/components/BulkUploadModal';
 import ChapterIndex from '@/components/ChapterIndex';
 import StoryArc from '@/components/StoryArc';
+import ProofReader from '@/components/ProofReader';
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -21,6 +22,7 @@ export default function Home() {
   });
   const [selectedUnassigned, setSelectedUnassigned] = useState(null);
   const [showBulkModal, setShowBulkModal] = useState(false);
+  const [showProofReader, setShowProofReader] = useState(false);
   const [bookmark, setBookmark] = useState(() => localStorage.getItem('jr_bookmark') ? Number(localStorage.getItem('jr_bookmark')) : null);
   const [bookmarkChapter, setBookmarkChapter] = useState(() => localStorage.getItem('jr_bookmark_chapter') || null);
   const scrollRef = useRef(null);
@@ -151,6 +153,7 @@ export default function Home() {
           onGoToBookmark={handleGoToBookmark}
           bookmark={bookmark}
           bookmarkChapter={bookmarkChapter}
+          onOpenProofReader={() => setShowProofReader(true)}
         />
         <main ref={scrollRef} className="max-w-3xl mx-auto px-4 pt-24 pb-16">
           {view === 'book' && (
@@ -169,6 +172,7 @@ export default function Home() {
           {view === 'gallery' && <GalleryView {...sharedProps} />}
           {view === 'export'  && <ExportView  illustrationMap={illustrationMap} />}
         </main>
+        {showProofReader && <ProofReader onClose={() => setShowProofReader(false)} />}
         {showBulkModal && (
           <BulkUploadModal
             onUpload={(files) => handleBulkUpload(files)}

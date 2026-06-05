@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 
 const TOTAL = 47;
 
-export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter }) {
+export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter, onOpenProofReader }) {
 
   const progress = Math.round((placedCount / TOTAL) * 100);
 
@@ -35,6 +35,10 @@ export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload
               <BookOpen className="w-3 h-3" />
               <span className="hidden xs:inline">Read</span>
             </Link>
+            <button onClick={onOpenProofReader} className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors font-medium">
+              <Sparkles className="w-3 h-3" />
+              <span className="hidden xs:inline">Proof</span>
+            </button>
             <button onClick={onOpenBulkUpload} className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-medium">
               <Upload className="w-3 h-3" />
               <span className="hidden xs:inline">Upload</span>
