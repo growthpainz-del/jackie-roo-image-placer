@@ -93,13 +93,7 @@ export default function Reader() {
     : beatMap[`${page.chapterId}:text:${PAGES.slice(0, index).filter(p => p.chapterId === page.chapterId && p.type === 'text').length}`] || null;
 
   return (
-    <div
-      className="fixed inset-0 bg-gray-950 flex flex-col select-none"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-    >
+    <div className="fixed inset-0 bg-gray-950 flex flex-col">
       {/* Top bar */}
       <div className="relative flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-sm z-10 flex-shrink-0">
         <div className="text-xs text-amber-300 font-book">
@@ -136,8 +130,14 @@ export default function Reader() {
         <div className="h-full bg-amber-500 transition-all duration-300" style={{ width: `${progress}%` }} />
       </div>
 
-      {/* Page content */}
-      <div className="flex-1 relative overflow-hidden">
+      {/* Page content — swipe/drag zone only */}
+      <div
+        className="flex-1 relative overflow-hidden select-none"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+      >
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
             key={index}

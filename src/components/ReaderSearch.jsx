@@ -72,8 +72,9 @@ export default function ReaderSearch({ pages, currentIndex, onNavigate, onQueryC
       {/* Search panel */}
       {open && (
         <div
-          className="absolute top-full left-0 right-0 z-50 bg-gray-950/95 backdrop-blur-sm border-b border-gray-700 px-4 py-2.5 flex items-center gap-2"
+          className="fixed top-[49px] left-0 right-0 z-50 bg-gray-950/95 backdrop-blur-sm border-b border-gray-700 px-4 py-2.5 flex items-center gap-2"
           onMouseDown={e => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <Search className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
           <input
