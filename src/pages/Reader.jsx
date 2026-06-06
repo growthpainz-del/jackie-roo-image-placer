@@ -8,6 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import FlagPanel from '@/components/FlagPanel';
 import { MOOD_MAP } from '@/components/BeatTagger';
+import ReaderSearch, { highlightText } from '@/components/ReaderSearch';
 
 // Flatten all blocks, skipping pageturns, tagging with chapter info
 const PAGES = [];
@@ -41,6 +42,7 @@ export default function Reader() {
   const [dragStart, setDragStart] = useState(null);
   const [showExport, setShowExport] = useState(false);
   const [showFlags, setShowFlags] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
   const { data: flags = [] } = useQuery({
@@ -99,7 +101,7 @@ export default function Reader() {
       onMouseUp={handleMouseUp}
     >
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-sm z-10 flex-shrink-0">
+      <div className="relative flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-sm z-10 flex-shrink-0">
         <div className="text-xs text-amber-300 font-book">
           <span className="font-semibold">{page.chapterTitle}</span>
           <span className="text-amber-500 ml-2 hidden sm:inline">{page.chapterSubtitle}</span>
@@ -115,6 +117,12 @@ export default function Reader() {
             <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[9px] font-bold rounded-full w-3.5 h-3.5 flex items-center justify-center">{pageFlagCount}</span>
           )}
         </button>
+        <ReaderSearch
+          pages={PAGES}
+          currentIndex={index}
+          onNavigate={(i) => { setDirection(i > index ? 1 : -1); setIndex(i); }}
+          onQueryChange={setSearchQuery}
+        />
         <button onClick={() => setShowExport(true)} className="text-amber-400 hover:text-amber-200 transition-colors" title="Export PDF">
           <Download className="w-4 h-4" />
         </button>
@@ -144,7 +152,7 @@ export default function Reader() {
             {page.type === 'slot' ? (
               <SlotPage page={page} illustration={illustration} beatTag={beatTag} />
             ) : (
-              <TextPage page={page} beatTag={beatTag} />
+              <TextPage page={page} beatTag={beatTag} searchQuery={searchQuery} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -248,7 +256,7 @@ function SlotPage({ page, illustration, beatTag }) {
   );
 }
 
-function TextPage({ page, beatTag }) {
+function TextPage({ page, beatTag, searchQuery }) {
   const mood = beatTag ? MOOD_MAP[beatTag.mood] : null;
   return (
     <div className="w-full max-w-xl flex flex-col items-center gap-5">
@@ -266,7 +274,7 @@ function TextPage({ page, beatTag }) {
         </div>
       )}
       <p className="text-amber-50 font-book text-lg sm:text-xl leading-relaxed whitespace-pre-line text-center">
-        {page.content}
+        {highlightText(page.content, searchQuery)}
       </p>
     </div>
   );
