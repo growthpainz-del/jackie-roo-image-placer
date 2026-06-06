@@ -27,21 +27,17 @@ export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload
                 <CornerUpLeft className="w-3.5 h-3.5" />
               </button>
             )}
-            <Link to="/assets" className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors font-medium">
-              <Sparkles className="w-3 h-3" />
-              <span className="hidden xs:inline">Assets</span>
+            <Link to="/assets" className="p-1.5 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors" title="Assets">
+              <Sparkles className="w-3.5 h-3.5" />
             </Link>
-            <Link to="/reader" className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-amber-600 hover:bg-amber-700 text-white transition-colors font-medium">
-              <BookOpen className="w-3 h-3" />
-              <span className="hidden xs:inline">Read</span>
+            <Link to="/reader" className="p-1.5 rounded bg-amber-600 hover:bg-amber-700 text-white transition-colors" title="Read">
+              <BookOpen className="w-3.5 h-3.5" />
             </Link>
-            <button onClick={onOpenProofReader} className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors font-medium">
-              <Sparkles className="w-3 h-3" />
-              <span className="hidden xs:inline">Proof</span>
+            <button onClick={onOpenProofReader} className="p-1.5 rounded bg-violet-600 hover:bg-violet-700 text-white transition-colors" title="Proof">
+              <Sparkles className="w-3.5 h-3.5" />
             </button>
-            <button onClick={onOpenBulkUpload} className="flex items-center gap-1 text-xs px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors font-medium">
-              <Upload className="w-3 h-3" />
-              <span className="hidden xs:inline">Upload</span>
+            <button onClick={onOpenBulkUpload} className="p-1.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white transition-colors" title="Upload">
+              <Upload className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
