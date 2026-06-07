@@ -144,9 +144,8 @@ export default function Home() {
   const sharedProps = { illustrationMap, onUpload: handleUpload, onAssignFromTray: handleAssignFromTray, onRemove: handleRemove, selectedUnassigned, setSelectedUnassigned };
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="min-h-screen bg-cream font-book">
-        <AppHeader
+    <>
+      <AppHeader
           view={view} setView={setView}
           placedCount={placedCount}
           onOpenBulkUpload={() => setShowBulkModal(true)}
@@ -156,6 +155,8 @@ export default function Home() {
           bookmarkChapter={bookmarkChapter}
           onOpenProofReader={() => setShowProofReader(true)}
         />
+      <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="min-h-screen bg-cream font-book">
         <main ref={scrollRef} className="max-w-3xl mx-auto px-4 pt-24 pb-16">
           {view === 'book' && (
             <>
@@ -193,6 +194,7 @@ export default function Home() {
           onRemoveFromTray={(id) => setUnassigned(prev => prev.filter(u => u.id !== id))}
         />
       </div>
-    </DragDropContext>
+      </DragDropContext>
+    </>
   );
 }
