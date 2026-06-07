@@ -4,13 +4,16 @@
 // It is never named. Readers discover it themselves. 🌳🤫
 //
 // REVEAL KICKER LINES — one per reveal image, locked:
-// ch1-reveal:       "Just add glitter."
-// ch2-reveal:       "Backstage pass."
-// ch3-birdbath:     "Love in full color."
-// ch4-reveal:       "Captain's log."
-// ch4-shed-reveal:  "Burst my bubble."
-// ch5-reveal:       "Dirty kids are happy kids."
-// finale-backyard:  "Your world is what you make it."
+// ch1-reveal:         "Just add glitter."
+// ch2-reveal:         "Backstage pass."
+// ch3-birdbath-reveal:"Love in full color."
+// ch3-cave-reveal:    "Love in full color."
+// ch4-reveal:         "Captain's log."
+// ch4-shed-reveal:    "Burst my bubble."
+// ch5-reveal:         "Dirty kids are happy kids."
+// finale-backyard:    "Your world is what you make it."
+//
+// SYNCED: 2026-06-07 from jackie-roo-manuscript-master.json (48 slots)
 
 export const BOOK_CHAPTERS = [
   {
@@ -38,7 +41,7 @@ export const BOOK_CHAPTERS = [
       { type: 'slot', slot_id: 'ch1-sam', order_index: 9, label: 'Shortbread Sam opening chest window — offering one to Jackie (clink-clank!)' },
       { type: 'text', content: 'From shortbread tins and a very neat bow tie — (clink-clank!) — Shortbread Sam!' },
       { type: 'pageturn' },
-      { type: 'slot', slot_id: 'ch1-reveal', order_index: 10, label: 'CHAPTER 1 REVEAL — kitchen floor quiet. Five still tin toys in a circle. Glitter pooling gold.' },
+      { type: 'slot', slot_id: 'ch1-reveal', order_index: 10, label: 'CHAPTER 1 REVEAL — kitchen floor quiet. Five still tin toys in a circle. Glitter pooling gold.', kicker: 'Just add glitter.' },
     ],
   },
   {
@@ -68,7 +71,7 @@ export const BOOK_CHAPTERS = [
       { type: 'slot', slot_id: 'ch2-orchestra', order_index: 20, label: 'Jackie conducting the muddy orchestra — oak twig wand raised, all five characters mid-sound in the puddles' },
       { type: 'text', content: 'Jackie raised her oak twig wand. She rose on her tippy-toes. She conducted. The cheeky Scottish sun peeked through the clouds for just a moment — as if it wanted to watch.' },
       { type: 'pageturn' },
-      { type: 'slot', slot_id: 'ch2-reveal', order_index: 21, label: 'CHAPTER 2 REVEAL — the old oak in the rain. Five still tin toys propped around it.' },
+      { type: 'slot', slot_id: 'ch2-reveal', order_index: 21, label: 'CHAPTER 2 REVEAL — the old oak in the rain. Five still tin toys propped around it.', kicker: 'Backstage pass.' },
     ],
   },
   {
@@ -82,7 +85,7 @@ export const BOOK_CHAPTERS = [
       { type: 'slot', slot_id: 'ch3-waterfall-dive', order_index: 23, label: 'Scotch Bot diving into the waterfall — rainbow bridge of light forming to the cave entrance' },
       { type: 'text', content: 'Scotch Bot stepped forward. He looked at the waterfall. He looked at Jackie. He looked at the waterfall again.\n\nAnd then — (plop!) — he stepped right in.\n\nHis golden glow radiated outward through the mist, and where it touched the droplets — a bridge. Shimmering. Arching. Rainbow.\n\n"Oh," said Jackie. And that was quite enough.' },
       { type: 'pageturn' },
-      { type: 'slot', slot_id: 'ch3-birdbath-reveal', order_index: 24, label: 'CHAPTER 3 REVEAL — old stone bird bath. Scotch Bot face-down in the water, rainbow ribbon trailing. Four toys scattered on the damp grass.' },
+      { type: 'slot', slot_id: 'ch3-birdbath-reveal', order_index: 24, label: 'CHAPTER 3 REVEAL — old stone bird bath. Scotch Bot face-down in the water, rainbow ribbon trailing. Four toys scattered on the damp grass.', kicker: 'Love in full color.' },
       { type: 'slot', slot_id: 'ch3-cave', order_index: 25, label: 'Rainbow cave interior — walls singing in every colour, Jackie twirling with oak twig wand' },
       { type: 'text', content: 'Inside the green shed — the Rainbow Cave — the walls sang in every colour. Red glowed warm. Orange tickled. Yellow sang happy. Green whispered peace. Blue cooled. Indigo dreamed. Violet sparkled mystery. Jackie twirled with her oak twig wand. The characters danced in the coloured light.' },
       { type: 'slot', slot_id: 'ch3-wooliewatt-whisp', order_index: 25.1, label: 'Woolie Watt frozen mid-spin — eyes sideways, hair crackling, catching a sparkle whisp at the edge of his vision' },
@@ -97,9 +100,9 @@ export const BOOK_CHAPTERS = [
       { type: 'text', content: '"Your mum," she said finally, "might be part garden fairy."\n\nShe looked up.\n\n"This is the nicest rainbow chard I\'ve seen in 632 years."\n\n"She grew it herself," said Jackie.\n\n"...Serious gardener," she said quietly.' },
       { type: 'slot', slot_id: 'ch3-fae-deal', order_index: 25.6, label: 'Fae Fickle holding up fingers making the deal — crew frozen, Random sitting innocently nearby' },
       { type: 'text', content: '"Right. Here\'s the arrangement." One finger. "You leave some of that chard with Random and me." Two fingers. "And we let you leave this cave without turning you all into toads."\n\nShe looked at the Scotch Bot crew, who were extremely still.\n\n"It\'s a generous offer," she added.\n\n"Deal," said Jackie immediately.\n\n"Furthermore — next time you visit, you wait at the entrance. You leave a bundle of rainbow chard. You leave no trace."\n\nShe paused.\n\n"And no whistling."\n\nRandom immediately ran in a small confused circle.\n\n"It\'s a long story," said Fae Fickle. "Just. No whistling."' },
-      { type: 'slot', slot_id: 'ch3-random-circles', order_index: 25.7, label: 'Random running in a small confused circle — motion blur, Fae Fickle eyes closed patiently, crew watching' },
-      { type: 'slot', slot_id: 'ch3-fae-exit', order_index: 25.8, label: 'Fae Fickle pointing imperiously at the cave entrance — chard tucked under arm, Random watching Jackie and crew leave, looking innocent' },
+      { type: 'slot', slot_id: 'ch3-fae-exit', order_index: 25.7, label: 'Fae Fickle pointing imperiously at the cave entrance — chard tucked under arm, Random watching Jackie and crew leave, looking innocent' },
       { type: 'text', content: 'She tucked the chard under her arm with great dignity.\n\n"Right. Time to go. My social battery is completely drained and I have rainbow chard tonic to prepare for the next Crystal Cave Guardian Assembly."\n\nShe pointed at the entrance.\n\n"Out."\n\nJackie went. Everyone went.\n\nRandom watched them leave, looking very innocent.\n\nHe was not innocent.' },
+      { type: 'slot', slot_id: 'ch3-cave-reveal', order_index: 26, label: 'CHAPTER 3 CAVE REVEAL — green shed interior, ordinary and quiet. Random curled in an open drawer.', kicker: 'Love in full color.' },
     ],
   },
   {
@@ -119,9 +122,9 @@ export const BOOK_CHAPTERS = [
       { type: 'slot', slot_id: 'ch4-bottled-cloud', order_index: 31, label: 'The Cloud Keeper presenting the bottled cloud — Jackie holding it carefully, descending toward the yard at twilight' },
       { type: 'text', content: 'The Cloud Keeper offered a gift: a small glowing bottle. Inside — a bottled cloud that released a gentle (puff-puff) when you squeezed it softly. The characters hummed a lullaby. The windship descended toward the yard. The lights in the cottage glowed amber and warm.' },
       { type: 'pageturn' },
-      { type: 'slot', slot_id: 'ch4-reveal', order_index: 32, label: 'CHAPTER 4 REVEAL — Jackie pulling red wagon in the rain. Dragonfly print tea towel as sail. Five tin toys inside.' },
+      { type: 'slot', slot_id: 'ch4-reveal', order_index: 32, label: 'CHAPTER 4 REVEAL — Jackie pulling red wagon in the rain. Dragonfly print tea towel as sail. Five tin toys inside.', kicker: "Captain's log." },
       { type: 'text', content: 'Behind the scenes and daydreams.\n\nThe green shed door was open just a crack. Jackie peered in.\n\nThe little fountain burbled softly on the counter. Soap bubbles drifted upward — slowly, slowly — and shaped themselves, one by one, into something that looked very much like turrets.\n\nCotton balls sat in a jar. Gold glitter caught the light.\n\n"Oh," said Jackie.' },
-      { type: 'slot', slot_id: 'ch4-shed-reveal', order_index: 33, label: 'CHAPTER 4 REVEAL — inside the green shed. Plugin fountain burbling. Soap bubbles sculpting into castle turret shapes. Five still inanimate toys propped along the counter.' },
+      { type: 'slot', slot_id: 'ch4-shed-reveal', order_index: 33, label: 'CHAPTER 4 REVEAL — inside the green shed. Plugin fountain burbling. Soap bubbles sculpting into castle turret shapes. Five still inanimate toys propped along the counter.', kicker: 'Burst my bubble.' },
     ],
   },
   {
@@ -130,32 +133,32 @@ export const BOOK_CHAPTERS = [
     subtitle: 'The Woolly Goalkeeper, Quack Bot & the Cleaning Fairy',
     chapterKey: 'Ch5',
     blocks: [
-      { type: 'slot', slot_id: 'ch5-football-lineup', order_index: 33, label: 'Jackie and all five robots trooping across the back garden — two upturned terracotta pots as goalposts ahead' },
+      { type: 'slot', slot_id: 'ch5-football-lineup', order_index: 34, label: 'Jackie and all five robots trooping across the back garden — two upturned terracotta pots as goalposts ahead' },
       { type: 'text', content: 'The back yard needed one more thing. A proper match. Jackie lined everyone up. Two upturned terracotta pots at the far end. She had a plan.' },
-      { type: 'slot', slot_id: 'ch5-wooliewatt-knitting', order_index: 34, label: 'Woolie Watt sitting cross-legged on the damp grass, knitting needles flickering (click-click-klink!)' },
+      { type: 'slot', slot_id: 'ch5-wooliewatt-knitting', order_index: 35, label: 'Woolie Watt sitting cross-legged on the damp grass, knitting needles flickering (click-click-klink!)' },
       { type: 'text', content: 'Woolie Watt sat cross-legged in the damp grass. His knitting needles flickered. A lumpy teal-and-gold wool ball grew in his lap. (click-click-klink!) "The official match ball," he announced. No one argued.' },
-      { type: 'slot', slot_id: 'ch5-scotchbot-goalkeeper', order_index: 35, label: 'Scotch Bot standing proudly between the terracotta pot goalposts — left eye swirling red, right eye gleaming gold' },
+      { type: 'slot', slot_id: 'ch5-scotchbot-goalkeeper', order_index: 36, label: 'Scotch Bot standing proudly between the terracotta pot goalposts — left eye swirling red, right eye gleaming gold' },
       { type: 'text', content: 'Scotch Bot took his position between the terracotta pots. Feet planted wide. Arms spread. Left eye swirling red. Right eye gleaming gold. He was, he informed everyone, completely unbeatable.' },
-      { type: 'slot', slot_id: 'ch5-eye-lost', order_index: 36, label: "Commotion! Jackie kicking the wool ball — it hits Scotch Bot's face, his swirly eye flying out, everyone frozen" },
+      { type: 'slot', slot_id: 'ch5-eye-lost', order_index: 37, label: "Commotion! Jackie kicking the wool ball — it hits Scotch Bot's face, his swirly eye flying out, everyone frozen" },
       { type: 'text', content: 'Jackie ran up. She kicked.\n\nThe wool ball sailed through the air.\n\nAnd — (BONK!) — it hit Scotch Bot directly in the face.\n\nOne swirly red eye flew out in a magnificent arc and disappeared into the long wet grass.\n\nEveryone froze.\n\n"Oh no," said Jackie.' },
-      { type: 'slot', slot_id: 'ch5-bagpipebot-recycling', order_index: 37, label: 'Bagpipe Bot at the recycling bin — holding up a dark glass bottle with a gold wax seal with great dignity' },
+      { type: 'slot', slot_id: 'ch5-bagpipebot-recycling', order_index: 38, label: 'Bagpipe Bot at the recycling bin — holding up a dark glass bottle with a gold wax seal with great dignity' },
       { type: 'text', content: 'Bagpipe Bot marched to the recycling bin with great purpose. He reached in. He held up a dark glass bottle with a gold wax seal.\n\n(toot-toot.)\n\nHe said nothing more. He didn\'t need to.' },
-      { type: 'slot', slot_id: 'ch5-jackie-fixes-eye', order_index: 38, label: "Jackie on her very tippy-toes, pressing the gold wax seal onto Scotch Bot's empty eye socket — Scotch Bot deeply moved" },
+      { type: 'slot', slot_id: 'ch5-jackie-fixes-eye', order_index: 39, label: "Jackie on her very tippy-toes, pressing the gold wax seal onto Scotch Bot's empty eye socket — Scotch Bot deeply moved" },
       { type: 'text', content: 'Jackie stood on her very tippy-toes. Tongue-tip out in concentration. She pressed the gold wax seal — gently, carefully — onto Scotch Bot\'s empty socket.\n\nScotch Bot blinked. His medallion turned slowly.\n\n(whizz... beep.)\n\nHe looked at Jackie for a long moment.\n\n"Professor Jackie Roo," he said, very quietly. "Thank you."' },
-      { type: 'slot', slot_id: 'ch5-tess-finds-eye', order_index: 39, label: "Tea Cozy Tess holding up the woolly ball triumphantly — Scotch Bot's red spiral eye pressed into the wool, staring out" },
+      { type: 'slot', slot_id: 'ch5-tess-finds-eye', order_index: 40, label: "Tea Cozy Tess holding up the woolly ball triumphantly — Scotch Bot's red spiral eye pressed into the wool, staring out" },
       { type: 'text', content: 'Tea Cozy Tess had been very quiet. Now she held up the teal-and-gold wool ball with both spoon-hands.\n\nScotch Bot\'s red spiral eye stared out from the centre, perfectly snug, looking rather pleased with itself.\n\n(ting-a-ting-ding!)\n\n"I found it," said Tess simply.\n\nEveryone cheered.' },
-      { type: 'slot', slot_id: 'ch5-flower-picking', order_index: 40, label: "Jackie kneeling picking wildflowers — Mum's face visible through the warm cottage window, watching quietly" },
+      { type: 'slot', slot_id: 'ch5-flower-picking', order_index: 41, label: "Jackie kneeling picking wildflowers — Mum's face visible through the warm cottage window, watching quietly" },
       { type: 'text', content: 'Jackie knelt in the rain-soaked grass. She picked wildflowers. One by one. She didn\'t notice the warm light in the cottage window. She didn\'t notice the face behind the glass. Watching. Quietly. Not interrupting.' },
-      { type: 'slot', slot_id: 'ch5-puddle-parade', order_index: 41, label: 'Six panel split grid — each character taking turns jumping in the giant muddy puddle, flower held aloft, sound word floating above each' },
+      { type: 'slot', slot_id: 'ch5-puddle-parade', order_index: 42, label: 'Six panel split grid — each character taking turns jumping in the giant muddy puddle, flower held aloft, sound word floating above each' },
       { type: 'text', content: 'One last thing.\n\nThe big puddle.\n\n(SPLOSH!) Jackie.\n(ZING-ZING!) Scotch Bot.\n(TOOT-SPLOSH!) Bagpipe Bot.\n(ZIP-ZAP!) Woolie Watt.\n(CLINK-CRASH!) Shortbread Sam.\n(PING-BOUNCE!) Tea Cozy Tess.\n\nEach one holding a wildflower. Each one glorious.' },
-      { type: 'slot', slot_id: 'ch5-doorway-handoff', order_index: 42, label: 'Jackie handing the muddy robot bundle and wildflower bouquet to Mum at the yellow door' },
+      { type: 'slot', slot_id: 'ch5-doorway-handoff', order_index: 43, label: 'Jackie handing the muddy robot bundle and wildflower bouquet to Mum at the yellow door' },
       { type: 'text', content: 'The yellow door opened. Jackie held out the muddy bundle of robots and the wildflower bouquet.\n\n"For you," she said.\n\nMum took them. Both. Without hesitation.\n\n"They\'re perfect," she said. And she meant all of it.' },
-      { type: 'slot', slot_id: 'ch5-cleaning-fairy', order_index: 43, label: "Mum saying 'I wish there was a cleaning fairy' — glasses askew, Jackie looking up with enormous eyes" },
+      { type: 'slot', slot_id: 'ch5-cleaning-fairy', order_index: 44, label: "Mum saying 'I wish there was a cleaning fairy' — glasses askew, Jackie looking up with enormous eyes" },
       { type: 'text', content: 'Mum surveyed the bathroom. Bubbles on the ceiling. Mud on the tiles. Glitter in the grout. Her glasses were askew. Very quietly, under her breath, she said:\n\n"I wish there was a cleaning fairy."\n\nJackie looked up. Her eyes went enormous.\n\n"Whats a cleaning fairy?"\n\nAn idea arrived.' },
-      { type: 'slot', slot_id: 'ch5-quackbot', order_index: 44, label: 'Jackie holding Quack Bot triumphantly — Mum laughing properly, rainbow bubbles everywhere' },
+      { type: 'slot', slot_id: 'ch5-quackbot', order_index: 45, label: 'Jackie holding Quack Bot triumphantly — Mum laughing properly, rainbow bubbles everywhere' },
       { type: 'text', content: 'Jackie reached into her pouch. She pressed Scotch Bot\'s spare swirly eye onto the rubber duck. Then she held it up with both hands.\n\n"Mum. Meet Quack Bot."\n\nMum laughed. Properly. The kind that takes over.\n\nQuack Bot said nothing. He was a rubber duck. But he had one very fine swirly eye.' },
       { type: 'pageturn' },
-      { type: 'slot', slot_id: 'ch5-reveal', order_index: 45, label: 'CHAPTER 5 REVEAL — five clean tin toys on the edge of the tub. A rubber duck with one googly eye. Glitter in the grout.' },
+      { type: 'slot', slot_id: 'ch5-reveal', order_index: 46, label: 'CHAPTER 5 REVEAL — five clean tin toys on the edge of the tub. A rubber duck with one googly eye. Glitter in the grout.', kicker: 'Dirty kids are happy kids.' },
     ],
   },
   {
@@ -164,8 +167,8 @@ export const BOOK_CHAPTERS = [
     subtitle: 'Wordless',
     chapterKey: 'Finale',
     blocks: [
-      { type: 'slot', slot_id: 'finale-rocking', order_index: 46, label: 'Mum rocking Jackie in the armchair — Quack Bot hugged tight, five tin toys on the windowsill, acorn glowing softly, Mums & Buds sign faintly visible' },
-      { type: 'slot', slot_id: 'finale-backyard', order_index: 47, label: 'FINAL IMAGE — the whole back yard from above, rain still falling. Every adventure mapped. No characters. No words. Just the yard. It was here the whole time.' },
+      { type: 'slot', slot_id: 'finale-rocking', order_index: 47, label: 'Mum rocking Jackie in the armchair — Quack Bot hugged tight, five tin toys on the windowsill, acorn glowing softly, Mums & Buds sign faintly visible' },
+      { type: 'slot', slot_id: 'finale-backyard', order_index: 48, label: 'FINAL IMAGE — the whole back yard from above, rain still falling. Every adventure mapped. No characters. No words. Just the yard. It was here the whole time.', kicker: 'Your world is what you make it.' },
     ],
   },
 ];

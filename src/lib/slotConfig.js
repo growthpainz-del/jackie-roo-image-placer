@@ -1,7 +1,7 @@
 // lib/slotConfig.js
 // Jackie Roo & The Rainy Day Robots — Illustration Slot Configuration
-// Master source: book-slot-config.json — last updated 2026-06-01
-// Total slots: 47 | HAVE: 45 | NEED: 2
+// SYNCED: 2026-06-07 from jackie-roo-scene-order.json
+// Total slots: 48
 
 export const SLOT_CONFIG = [
   // ── Chapter 1 ──────────────────────────────────────────────────────────────
@@ -33,7 +33,15 @@ export const SLOT_CONFIG = [
   { slot_id: "ch3-waterfall-picnic", chapter: "Ch3", order_index: 22, label: "Picnic beside the waterfall — rainbow trout sandwiches, Tess ladling rainbow carrot soup, steam curling in waterfall mist" },
   { slot_id: "ch3-waterfall-dive",   chapter: "Ch3", order_index: 23, label: "Scotch Bot diving into the waterfall (plop!) — his glow radiating outward forming a shimmering rainbow bridge of light to the cave entrance, mist swirling, Jackie and robots watching in wonder" },
   { slot_id: "ch3-birdbath-reveal",  chapter: "Ch3", order_index: 24, label: "REVEAL — old weathered stone bird bath beside the green shed. Scotch Bot tin toy face-down in the water, rainbow ribbon trailing. Other four toys scattered on the damp grass. Garden tools nearby. Shed door ajar, warm light glowing inside. Just toys. Just a rainy Tuesday." },
-  { slot_id: "ch3-cave",             chapter: "Ch3", order_index: 25, label: "Rainbow cave interior — walls singing in every colour, rainbow trout in glowing pool, Jackie twirling with wand, characters dancing" },
+  { slot_id: "ch3-cave",             chapter: "Ch3", order_index: 25,   label: "Rainbow cave interior — walls singing in every colour, rainbow trout in glowing pool, Jackie twirling with wand, characters dancing" },
+  { slot_id: "ch3-wooliewatt-whisp", chapter: "Ch3", order_index: 25.1, label: "Woolie Watt frozen mid-spin — eyes sideways, hair crackling, catching a sparkle whisp at the edge of his vision" },
+  { slot_id: "ch3-random-appears",   chapter: "Ch3", order_index: 25.2, label: "Random sitting in the middle of the Rainbow Cave — small, fluffy, completely unbothered. Jackie staring at it." },
+  { slot_id: "ch3-fae-appears",      chapter: "Ch3", order_index: 25.3, label: "Fae Fickle appearing — spear raised, hand on hip, pointing directly at Jackie. The crew frozen behind her." },
+  { slot_id: "ch3-chard-moment",     chapter: "Ch3", order_index: 25.4, label: "Fae Fickle holding rainbow chard leaf up to the crystal light — spear lowered, expression completely changed, reverent" },
+  { slot_id: "ch3-garden-fairy-line",chapter: "Ch3", order_index: 25.5, label: "CLOSE UP — Fae Fickle looking directly at Jackie, chard held to her chest, deadly serious. The 632 years line." },
+  { slot_id: "ch3-fae-deal",         chapter: "Ch3", order_index: 25.6, label: "Fae Fickle holding up fingers making the deal — crew frozen, Random sitting innocently nearby" },
+  { slot_id: "ch3-fae-exit",         chapter: "Ch3", order_index: 25.7, label: "Fae Fickle pointing imperiously at the cave entrance — chard tucked under arm, Random watching Jackie and crew leave, looking innocent" },
+  { slot_id: "ch3-cave-reveal",      chapter: "Ch3", order_index: 26,   label: "REVEAL — green shed interior, ordinary and quiet. Random curled in an open drawer." },
 
   // ── Chapter 4 ──────────────────────────────────────────────────────────────
   { slot_id: "ch4-whistle",       chapter: "Ch4", order_index: 27, label: "Jackie finding the brass whistle among rainbow pebbles — holding it to the light, eyes enormous, oak twig wand under her arm" },
@@ -45,23 +53,23 @@ export const SLOT_CONFIG = [
   { slot_id: "ch4-shed-reveal",   chapter: "Ch4", order_index: 33, label: "REVEAL — inside the green shed, door ajar, soft grey light — cotton balls dusted with gold glitter on a shelf, soap bubbles drifting and sculpting into soft castle turret shapes — five still inanimate toys propped around an old stone water fountain, slumped and silent — gold glitter traces on the shed floor — just toys, just cotton balls, just bubbles, just a rainy Tuesday." },
 
   // ── Chapter 5 ──────────────────────────────────────────────────────────────
-  { slot_id: "ch5-football-lineup",    chapter: "Ch5", order_index: 33, label: "Jackie and all five robots trooping across the back garden in a cheerful line — two upturned terracotta pots as goalposts visible ahead" },
-  { slot_id: "ch5-wooliewatt-knitting", chapter: "Ch5", order_index: 34, label: "Woolie Watt sitting cross-legged on the damp grass, knitting needles flickering, lumpy teal-and-gold wool ball growing in his lap (click-click-klink!)" },
-  { slot_id: "ch5-scotchbot-goalkeeper", chapter: "Ch5", order_index: 35, label: "Scotch Bot standing proudly between the terracotta pot goalposts — feet planted wide, arms spread, left eye swirling red, right eye gleaming gold — the unbeatable goalkeeper" },
-  { slot_id: "ch5-eye-lost",           chapter: "Ch5", order_index: 36, label: "Commotion! Jackie kicking the wool ball — it hits Scotch Bot's face, his swirly eye flying out toward the terracotta goalposts, everyone frozen in horror" },
-  { slot_id: "ch5-bagpipebot-recycling", chapter: "Ch5", order_index: 37, label: "Bagpipe Bot at the recycling bin by the garden wall — holding up a dark glass bottle with a gold wax seal with great dignity" },
-  { slot_id: "ch5-jackie-fixes-eye",   chapter: "Ch5", order_index: 38, label: "Jackie on her very tippy-toes, tongue-tip out in concentration, pressing the gold wax seal gently onto Scotch Bot's empty eye socket — Scotch Bot deeply moved" },
-  { slot_id: "ch5-tess-finds-eye",     chapter: "Ch5", order_index: 39, label: "Tea Cozy Tess holding up the woolly ball triumphantly — Scotch Bot's red spiral eye pressed snugly into the teal-and-gold wool, staring out. Tess mid-laugh (ting-a-ting-ding!)" },
-  { slot_id: "ch5-flower-picking",     chapter: "Ch5", order_index: 40, label: "Jackie kneeling in the rain-soaked back garden picking wildflowers — Mum's face softly visible through the warm glowing cottage window, watching quietly, unnoticed by Jackie" },
-  { slot_id: "ch5-puddle-parade",      chapter: "Ch5", order_index: 41, label: "Six panel split grid — each character taking their turn jumping in the giant muddy puddle in the rain, flower held aloft, sound word floating above" },
-  { slot_id: "ch5-doorway-handoff",    chapter: "Ch5", order_index: 42, label: "Jackie handing the muddy robot bundle and wildflower bouquet to Mum at the yellow door — wicker basket of treasures glowing on the entryway floor, muddy footprints trailing in" },
-  { slot_id: "ch5-cleaning-fairy",     chapter: "Ch5", order_index: 43, label: "Mum saying 'I wish there was a cleaning fairy' — glasses askew, Jackie looking up with enormous wondering eyes" },
-  { slot_id: "ch5-quackbot",           chapter: "Ch5", order_index: 44, label: "Jackie holding Quack Bot triumphantly out of the bubbles — Scotch Bot's spare swirly eye on the rubber duck, Mum laughing beside the tub, rainbow bubbles everywhere" },
-  { slot_id: "ch5-reveal",             chapter: "Ch5", order_index: 45, label: "REVEAL — bathroom quiet. Five clean tin toys on edge of the tub. Rubber duck with one googly eye. Glitter in the grout. Just toys. Just a Tuesday. [NEED]" },
+  { slot_id: "ch5-football-lineup",     chapter: "Ch5", order_index: 34, label: "Jackie and all five robots trooping across the back garden in a cheerful line — two upturned terracotta pots as goalposts visible ahead" },
+  { slot_id: "ch5-wooliewatt-knitting", chapter: "Ch5", order_index: 35, label: "Woolie Watt sitting cross-legged on the damp grass, knitting needles flickering, lumpy teal-and-gold wool ball growing in his lap (click-click-klink!)" },
+  { slot_id: "ch5-scotchbot-goalkeeper",chapter: "Ch5", order_index: 36, label: "Scotch Bot standing proudly between the terracotta pot goalposts — feet planted wide, arms spread, left eye swirling red, right eye gleaming gold — the unbeatable goalkeeper" },
+  { slot_id: "ch5-eye-lost",            chapter: "Ch5", order_index: 37, label: "Commotion! Jackie kicking the wool ball — it hits Scotch Bot's face, his swirly eye flying out toward the terracotta goalposts, everyone frozen in horror" },
+  { slot_id: "ch5-bagpipebot-recycling",chapter: "Ch5", order_index: 38, label: "Bagpipe Bot at the recycling bin by the garden wall — holding up a dark glass bottle with a gold wax seal with great dignity" },
+  { slot_id: "ch5-jackie-fixes-eye",    chapter: "Ch5", order_index: 39, label: "Jackie on her very tippy-toes, tongue-tip out in concentration, pressing the gold wax seal gently onto Scotch Bot's empty eye socket — Scotch Bot deeply moved" },
+  { slot_id: "ch5-tess-finds-eye",      chapter: "Ch5", order_index: 40, label: "Tea Cozy Tess holding up the woolly ball triumphantly — Scotch Bot's red spiral eye pressed snugly into the teal-and-gold wool, staring out. Tess mid-laugh (ting-a-ting-ding!)" },
+  { slot_id: "ch5-flower-picking",      chapter: "Ch5", order_index: 41, label: "Jackie kneeling in the rain-soaked back garden picking wildflowers — Mum's face softly visible through the warm glowing cottage window, watching quietly, unnoticed by Jackie" },
+  { slot_id: "ch5-puddle-parade",       chapter: "Ch5", order_index: 42, label: "Six panel split grid — each character taking their turn jumping in the giant muddy puddle in the rain, flower held aloft, sound word floating above" },
+  { slot_id: "ch5-doorway-handoff",     chapter: "Ch5", order_index: 43, label: "Jackie handing the muddy robot bundle and wildflower bouquet to Mum at the yellow door — wicker basket of treasures glowing on the entryway floor, muddy footprints trailing in" },
+  { slot_id: "ch5-cleaning-fairy",      chapter: "Ch5", order_index: 44, label: "Mum saying 'I wish there was a cleaning fairy' — glasses askew, Jackie looking up with enormous wondering eyes" },
+  { slot_id: "ch5-quackbot",            chapter: "Ch5", order_index: 45, label: "Jackie holding Quack Bot triumphantly out of the bubbles — Scotch Bot's spare swirly eye on the rubber duck, Mum laughing beside the tub, rainbow bubbles everywhere" },
+  { slot_id: "ch5-reveal",              chapter: "Ch5", order_index: 46, label: "REVEAL — bathroom quiet. Five clean tin toys on edge of the tub. Rubber duck with one googly eye. Glitter in the grout. Just toys. Just a Tuesday." },
 
   // ── Finale ─────────────────────────────────────────────────────────────────
-  { slot_id: "finale-rocking",  chapter: "Finale", order_index: 46, label: "Mum rocking Jackie in the armchair — Quack Bot hugged tight, five tin toys on windowsill watching the rain, acorn glowing, Mums & Buds sign glowing faintly through the front window" },
-  { slot_id: "finale-backyard", chapter: "Finale", order_index: 47, label: "FINAL IMAGE — aerial view of the whole back yard. Every adventure mapped. No characters. No words. Just the yard. It was here the whole time." },
+  { slot_id: "finale-rocking",  chapter: "Finale", order_index: 47, label: "Mum rocking Jackie in the armchair — Quack Bot hugged tight, five tin toys on windowsill watching the rain, acorn glowing, Mums & Buds sign glowing faintly through the front window" },
+  { slot_id: "finale-backyard", chapter: "Finale", order_index: 48, label: "FINAL IMAGE — aerial view of the whole back yard. Every adventure mapped. No characters. No words. Just the yard. It was here the whole time." },
 ];
 
 export const CHAPTERS = [

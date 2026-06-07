@@ -2,7 +2,7 @@ import { BookOpen, Grid3X3, Download, Bookmark, CornerUpLeft, Upload, Sparkles }
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
-const TOTAL = 47;
+const TOTAL = 48;
 
 export default function AppHeader({ view, setView, placedCount, onOpenBulkUpload, onBookmark, onGoToBookmark, bookmark, bookmarkChapter, onOpenProofReader }) {
 
